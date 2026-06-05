@@ -1,0 +1,27 @@
+# Các file cấu hình nhạy cảm
+.env
+device_manager/.env
+device_manager/src/config.php.bak
+
+# Python caches và cookies
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+cookies.pkl
+cookies_gv.pkl
+device_manager/src/cookies_gv.pkl
+
+# Sao lưu database và logs
+device_manager/backups/
+device_manager/backups/*.sql.gz
+device_manager/backups/*.log
+
+# Các thư mục cấu hình IDE
+.idea/
+.vscode/
+.history/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

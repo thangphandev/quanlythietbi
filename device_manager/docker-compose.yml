@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # ---------------------------------------------------------
+  # 1. DỊCH VỤ CƠ SỞ DỮ LIỆU DÙNG CHUNG (PostgreSQL)
+  # ---------------------------------------------------------
+  db:
+    image: postgres:16-alpine
+    container_name: device_manager_db
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: htql
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - app-network
+
+  # ---------------------------------------------------------
+  # 2. DỰ ÁN 1: QUẢN LÝ THIẾT BỊ (PHP Apache Web Server)
+  # ---------------------------------------------------------
+  web:
+    build: .
+    container_name: device_manager_web
+    restart: always
+    ports:
+      - "8082:80"  # Cổng truy cập trang Quản lý thiết bị
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=htql
+      - DB_USER=postgres
+      - DB_PASSWORD=12345
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+      - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI:-http://localhost:8080/callback.php}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+      - ALLOW_DEMO=${ALLOW_DEMO:-false}
+    volumes:
+      - ./src:/var/www/html
+      - ../:/app_crawler
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

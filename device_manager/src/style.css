@@ -1,0 +1,2951 @@
+/* ==============================================================================
+   DESIGN SYSTEM - LIGHT CLASSIC ACADEMIC GLASSMORPHISM
+   ============================================================================== */
+
+:root {
+    --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    --panel-bg: rgba(255, 255, 255, 0.7);
+    --panel-border: rgba(255, 255, 255, 0.6);
+    --accent-blue: #0056b3;
+    /* Xanh hoàng gia chuyên nghiệp đại học */
+    --accent-blue-hover: #004085;
+    --accent-cyan: #0066cc;
+    --success-green: #10b981;
+    --error-red: #ef4444;
+    --warning-yellow: #f59e0b;
+    --text-primary: #0f172a;
+    /* Slate 900 */
+    --text-secondary: #334155;
+    /* Slate 700 */
+    --text-muted: #64748b;
+    /* Slate 500 */
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --shadow-premium: 0 10px 30px rgba(0, 40, 80, 0.06);
+    --border-radius-lg: 24px;
+    --border-radius-md: 12px;
+}
+
+/* Base resets & scrollbar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    border: 2px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-blue);
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+header {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 10px 15px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+header .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+header h1 {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-blue) 30%, #0099ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+header .user-info-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 2px;
+    font-size: 0.85rem;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 4px 12px;
+    border-radius: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+header .user-info-bar span {
+    color: var(--text-secondary);
+}
+
+header .user-info-bar a {
+    color: #d32f2f;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+header .user-info-bar a:hover {
+    color: #b71c1c;
+}
+
+.container {
+    max-width: 100%;
+    width: 99%;
+    margin: 15px auto;
+    padding: 20px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-premium);
+}
+
+h2,
+h3 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--accent-blue);
+}
+
+/* Form Styles */
+label {
+    display: block;
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.input-badge-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.class-badge {
+    align-self: flex-start;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: #047857;
+    font-size: 0.85rem;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+input[type="text"],
+select,
+textarea {
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #cbd5e1;
+    /* Slate 300 */
+    border-radius: var(--border-radius-md);
+    color: var(--text-primary);
+    font-size: 1.02rem;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: var(--font-body);
+}
+
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 10px rgba(0, 86, 179, 0.15);
+    background: #fff;
+}
+
+/* Device Entry Design */
+.device-container {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    max-height: 480px;
+    overflow-y: auto;
+    padding: 10px;
+    margin-top: 8px;
+}
+
+.device-entry {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    position: relative;
+    background: rgba(255, 255, 255, 0.3);
+    margin-bottom: 6px;
+}
+
+.device-entry:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.device-entry:hover {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.device-entry.selected {
+    background: rgba(0, 86, 179, 0.04);
+    border: 1px solid rgba(0, 86, 179, 0.15);
+}
+
+.device-entry input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    accent-color: var(--accent-blue);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.device-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.device-info strong {
+    font-family: var(--font-heading);
+    font-size: 1.12rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.device-info small {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+/* Status colors */
+.status-good {
+    color: #059669;
+    /* Xanh lá sẫm */
+    font-weight: 600;
+}
+
+.status-bad {
+    color: #dc2626;
+    /* Đỏ */
+    font-weight: 600;
+}
+
+.device-action-btn {
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+    font-weight: 500;
+}
+
+.device-action-btn:hover {
+    background: var(--accent-blue);
+    color: #fff;
+    border-color: var(--accent-blue);
+}
+
+/* Quantity Control */
+.qty {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 6px 12px;
+    border-radius: 8px;
+    align-self: flex-start;
+}
+
+.qty-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.qty-control input[type="text"] {
+    width: 45px !important;
+    padding: 4px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    height: 32px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    color: var(--text-primary);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.qty-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: var(--accent-blue);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.qty-button:hover {
+    background: var(--accent-blue-hover);
+}
+
+/* QR Scanner Trigger */
+.qr-trigger-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.btn-qr-scan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--accent-blue), #0099ff);
+    color: #fff;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    padding: 16px 28px;
+    border-radius: 14px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 4px 15px rgba(0, 86, 179, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-qr-scan:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 86, 179, 0.25);
+    filter: brightness(1.05);
+}
+
+.btn-qr-scan svg {
+    fill: #fff;
+    width: 24px;
+    height: 24px;
+}
+
+/* Rate Summary Container */
+.rate-summary-container {
+    background: rgba(0, 86, 179, 0.03);
+    border: 1px solid rgba(0, 86, 179, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.rate-summary-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 15px 0;
+}
+
+.rate-summary-item:last-child {
+    border-bottom: none;
+}
+
+.rate-summary-item strong {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.rate-summary-item select {
+    width: auto;
+    display: inline-block;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    height: 38px;
+    margin-right: 15px;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+}
+
+.rate-summary-item textarea {
+    width: 100%;
+    margin-top: 10px;
+    height: 60px;
+    font-size: 0.95rem;
+    padding: 10px;
+    resize: vertical;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    color: var(--text-primary);
+}
+
+/* Action Buttons */
+button[type="submit"] {
+    background: linear-gradient(135deg, var(--accent-blue), #0044aa);
+    color: #fff;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.15rem;
+    padding: 18px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 30px;
+    box-shadow: 0 4px 15px rgba(0, 86, 179, 0.2);
+    transition: all 0.3s;
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, var(--accent-blue-hover), #003388);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 86, 179, 0.3);
+}
+
+button[type="submit"]:disabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Footer Section */
+footer {
+    text-align: center;
+    margin: 20px auto;
+    max-width: 1000px;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+footer a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Modal CSS - PREMIUM SMOOTH Scale and Blur */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3000;  /* luôn trên cart-drawer (2100) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.4);
+    /* Mờ tối nhẹ */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 1);
+    width: 90%;
+    max-width: 520px;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    transform: scale(0.9) translateY(20px);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    z-index: 3001;
+    color: var(--text-primary);
+    
+    /* Responsive scrollable sizing */
+    max-height: 90vh;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+/* Premium scrollbar styling for WebKit browsers */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.modal-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+.modal.active .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: var(--error-red);
+    color: #fff;
+    border-color: var(--error-red);
+}
+
+/* Modal specific elements */
+.modal-title {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 10px;
+    color: var(--accent-blue);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    background: #f8fafc;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+.info-item span:first-child {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.info-item span:last-child {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.modal-update-box {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.modal-update-box h4 {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+}
+
+.btn-update-modal {
+    background: var(--accent-blue);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95rem;
+    margin-top: 12px;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+.btn-update-modal:hover {
+    background: var(--accent-blue-hover);
+    box-shadow: 0 4px 12px rgba(0, 86, 179, 0.2);
+}
+
+/* Success Checkmark Overlay Animation */
+.success-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.success-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.checkmark-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--success-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+    transform: scale(0.3);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.success-overlay.active .checkmark-circle {
+    transform: scale(1);
+}
+
+.checkmark-circle svg {
+    width: 50px;
+    height: 50px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 80;
+    stroke-dashoffset: 80;
+    animation: stroke 0.6s 0.3s ease forwards;
+}
+
+@keyframes stroke {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.success-msg {
+    margin-top: 30px;
+    text-align: center;
+    max-width: 480px;
+    padding: 0 20px;
+}
+
+.success-msg h2 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.success-msg p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.05rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.btn-success-close {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.btn-success-close:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* Floating Notification */
+.floating-notif {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid #cbd5e1;
+    padding: 14px 22px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    z-index: 10000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-primary);
+}
+
+.floating-notif.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.floating-notif-icon {
+    font-size: 1.2rem;
+}
+
+/* Utility: hide text on mobile, show icon only */
+.mobile-hide {
+    display: inline;
+}
+
+/* Responsive adjustments */
+@media(max-width: 600px) {
+    .mobile-hide {
+        display: none !important;
+    }
+
+    .container {
+        padding: 10px 10px;
+    }
+
+    header h1 {
+        font-size: 1.3rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rate-summary-item select {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .btn-qr-scan {
+        width: 100%;
+    }
+}
+
+/* ==============================================================================
+   ADDITIONAL STYLES FOR THE ENHANCED BORROW PAGE (TWO-COLUMN DASHBOARD)
+   ============================================================================== */
+
+/* Two-column layout grid */
+.two-column-layout {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 30px;
+    align-items: start;
+    margin-top: 20px;
+}
+
+@media(max-width: 968px) {
+    .two-column-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Method Selector Tab buttons */
+.borrow-tabs {
+    display: flex;
+    border-bottom: 2px solid #cbd5e1;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.borrow-tab-btn {
+    flex: 1;
+    padding: 14px 8px;
+    text-align: center;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.borrow-tab-btn:hover {
+    color: var(--accent-blue);
+}
+
+.borrow-tab-btn.active {
+    color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
+}
+
+.borrow-tab-content {
+    display: none;
+}
+
+.borrow-tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Search bar styles */
+.search-container {
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 7px 13px;
+    font-size: 0.88rem;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    outline: none;
+    height: 36px;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 8px rgba(0, 86, 179, 0.1);
+}
+
+/* Compact manual picking items */
+.manual-device-list {
+    max-height: calc(100dvh - 310px);
+    min-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.manual-device-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+    background: rgba(255, 255, 255, 0.2);
+    margin-bottom: 4px;
+}
+
+.manual-device-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.manual-device-item:hover {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.manual-device-item.active {
+    background: rgba(0, 86, 179, 0.04);
+    border: 1px solid rgba(0, 86, 179, 0.15);
+    box-shadow: inset 0 0 10px rgba(0, 86, 179, 0.02);
+}
+
+.manual-device-item img {
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+}
+
+.manual-device-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.manual-device-item-info strong {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.manual-device-item-info span {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Selected compact device cards (Giỏ đồ) — legacy classes kept for compat */
+.selected-device-card { display: none; } /* replaced by .sdc */
+.selected-device-remove { display: none; }
+
+/* ============================================================
+   SDC — Selected Device Card (thiết kế hiện đại)
+   ============================================================ */
+.sdc {
+    background: #fff;
+    border-radius: 14px;
+    border-left: 4px solid var(--sdc-accent, #10b981);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.15s;
+    margin-bottom: 0;  /* gap handled by parent flex */
+}
+
+.sdc:hover {
+    box-shadow: 0 6px 22px rgba(0,0,0,0.11);
+    transform: translateY(-1px);
+}
+
+/* ── Hàng trên: thumb + info + buttons ── */
+.sdc-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px 8px 12px;
+}
+
+/* Ảnh thiết bị */
+.sdc-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+    cursor: zoom-in;
+    transition: transform 0.2s;
+}
+.sdc-thumb:hover { transform: scale(1.07); }
+
+.sdc-thumb-noimg {
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: default;
+}
+
+/* Khối thông tin chính */
+.sdc-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sdc-name {
+    font-size: 0.87rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+    word-break: break-word;
+    letter-spacing: -0.01em;
+}
+
+/* Hàng meta: mã | năm | trạng thái */
+.sdc-sub {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.sdc-code {
+    font-size: 0.68rem;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    color: var(--accent-blue);
+    background: rgba(0,86,179,0.08);
+    padding: 2px 6px;
+    border-radius: 5px;
+    letter-spacing: 0.1px;
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+.sdc-year {
+    font-size: 0.69rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    background: #f1f5f9;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+/* Cột nút bên phải */
+.sdc-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.sdc-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.18s;
+    line-height: 1;
+}
+
+.sdc-btn-info {
+    background: rgba(0,86,179,0.07);
+    color: var(--accent-blue);
+    border: 1px solid rgba(0,86,179,0.15);
+    font-size: 1.05rem;
+}
+.sdc-btn-info:hover {
+    background: var(--accent-blue);
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(0,86,179,0.25);
+    transform: scale(1.08);
+}
+
+.sdc-btn-remove {
+    background: rgba(239,68,68,0.07);
+    color: #ef4444;
+    border: 1px solid rgba(239,68,68,0.15);
+    font-size: 1.15rem;
+}
+.sdc-btn-remove:hover {
+    background: #ef4444;
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(239,68,68,0.25);
+    transform: scale(1.08);
+}
+
+/* ── Hàng dưới: tình trạng bàn giao ── */
+.sdc-review {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px 10px 12px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    background: rgba(248,250,252,0.8);
+    flex-wrap: wrap;
+}
+
+.sdc-review-label {
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.sdc-select {
+    flex: 1;
+    min-width: 130px;
+    height: 30px;
+    padding: 0 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+.sdc-select:focus { border-color: var(--accent-blue); outline: none; }
+
+.sdc-textarea {
+    width: 100%;
+    margin-top: 6px;
+    padding: 7px 10px;
+    font-size: 0.82rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 44px;
+    background: #fff;
+    color: var(--text-primary);
+    line-height: 1.4;
+    transition: border-color 0.15s;
+}
+.sdc-textarea:focus { border-color: var(--accent-blue); outline: none; }
+
+/* Device Usage History lists in Details Modal */
+.history-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: var(--accent-blue);
+    border-bottom: 1px dashed #cbd5e1;
+    padding-bottom: 5px;
+}
+
+.history-list {
+    max-height: 160px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 2px;
+}
+
+.history-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+}
+
+.history-item-meta {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.history-item-body {
+    color: var(--text-secondary);
+    font-style: italic;
+    word-break: break-all;
+}
+
+.empty-history {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    padding: 15px 0;
+    font-style: italic;
+}
+
+/* ==============================================================================
+   HIỆU CHỈNH GIAO DIỆN MỚI CỦA BỘ MÔN Ô TÔ ĐIỆN - PHẦN MƯỢN THIẾT BỊ
+   ============================================================================== */
+
+/* Bộ chọn chế độ mượn cao cấp (Mode Selector) */
+.borrow-mode-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.mode-card {
+    background: rgba(255, 255, 255, 0.45);
+    border: 2px solid rgba(226, 232, 240, 0.6);
+    border-radius: 18px;
+    padding: 16px 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    user-select: none;
+}
+
+.mode-card:hover {
+    background: rgba(255, 255, 255, 0.65);
+    border-color: rgba(0, 86, 179, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 40, 80, 0.04);
+}
+
+.mode-card.active {
+    background: #fff;
+    border-color: var(--accent-blue);
+    box-shadow: 0 10px 25px rgba(0, 86, 179, 0.12);
+    transform: translateY(-2px);
+}
+
+.mode-card-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.06));
+    transition: transform 0.3s ease;
+}
+
+.mode-card.active .mode-card-icon {
+    transform: scale(1.15);
+}
+
+.mode-card-title {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.mode-card.active .mode-card-title {
+    color: var(--accent-blue);
+}
+
+.mode-card-desc {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+
+/* Huy hiệu tình trạng thiết bị (Color-coded Badges) */
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 30px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.badge-status-good {
+    background: rgba(6, 240, 111, 0.952);
+    color: #047857;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.badge-status-warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: #b45309;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.badge-status-bad {
+    background: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* Nút xem chi tiết */
+.btn-view-details {
+    background: rgba(0, 86, 179, 0.05);
+    border: 1px solid rgba(0, 86, 179, 0.15);
+    color: var(--accent-blue);
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-view-details:hover {
+    background: var(--accent-blue);
+    color: #fff;
+    border-color: var(--accent-blue);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 86, 179, 0.15);
+}
+
+/* Chỉnh lại kiểu manual item */
+.manual-device-item {
+    padding: 12px;
+    align-items: center;
+}
+
+.manual-device-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.manual-device-btn-add {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    background: var(--accent-blue);
+    color: #fff;
+    border-radius: 8px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.manual-device-btn-add:hover {
+    background: var(--accent-blue-hover);
+    transform: scale(1.03);
+}
+
+.manual-device-item.active .manual-device-btn-add {
+    background: var(--success-green);
+}
+
+/* Grid lịch sử sử dụng cao cấp */
+.history-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.history-card {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
+    transition: all 0.2s;
+}
+
+.history-card:hover {
+    transform: translateX(3px);
+    box-shadow: 0 4px 10px rgba(0, 86, 179, 0.05);
+    border-color: rgba(0, 86, 179, 0.15);
+}
+
+.history-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.history-card-user {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.history-card-date {
+    font-size: 0.78rem;
+}
+
+.history-card-body {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.history-card-purpose {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* Thẩm mỹ cho review bàn giao */
+.selected-device-card-review {
+    background: rgba(0, 86, 179, 0.02);
+    border: 1px solid rgba(0, 86, 179, 0.05);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.selected-device-card-review select {
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* ==============================================================================
+   MOBILE-FIRST UX OPTIMIZATIONS (LIGHTBOX, FLOATING BUTTON, SLIDE-UP DRAWER)
+   ============================================================================== */
+
+/* Thumbnail Phóng to */
+.zoomable-thumb {
+    cursor: zoom-in;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.zoomable-thumb:hover {
+    transform: scale(1.08) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Lightbox Phóng to Ảnh */
+.image-zoom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.85);
+    /* Tối slate mờ */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 11000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.image-zoom-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.image-zoom-content {
+    max-width: 90vw;
+    max-height: 80vh;
+    border-radius: 20px;
+    border: 4px solid #fff;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    object-fit: contain;
+    background: #fff;
+}
+
+.image-zoom-overlay.active .image-zoom-content {
+    transform: scale(1);
+}
+
+.image-zoom-close {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-size: 2.2rem;
+    color: #fff;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    user-select: none;
+    line-height: 1;
+}
+
+.image-zoom-close:hover {
+    background: #fff;
+    color: #0f172a;
+    transform: rotate(90deg);
+}
+
+/* Thanh điều khiển zoom lightbox */
+.image-zoom-controls {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50px;
+    padding: 8px 18px;
+    color: #fff;
+    font-size: 0.8rem;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.image-zoom-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.image-zoom-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.image-zoom-level {
+    font-size: 0.78rem;
+    font-weight: 600;
+    min-width: 38px;
+    text-align: center;
+}
+
+/* Nút Giỏ Hàng Nổi (Floating Cart Trigger) */
+.floating-cart-trigger {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-blue) 30%, #0099ff 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 86, 179, 0.35);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    z-index: 999;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    user-select: none;
+}
+
+.floating-cart-trigger:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 14px 35px rgba(0, 86, 179, 0.45);
+}
+
+.floating-cart-trigger:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.floating-cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--error-red);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    box-shadow: 0 2px 10px rgba(239, 68, 68, 0.45);
+    border: 2px solid #fff;
+    animation: pulseBadge 2.2s infinite;
+}
+
+@keyframes pulseBadge {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Overlay cho Drawer Giỏ Hàng */
+.cart-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 2000;  /* dưới cart-drawer một bậc */
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.cart-drawer-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+}
+
+/* Drawer Giỏ Hàng Trượt (Cart Drawer) */
+.cart-drawer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+    box-shadow: 0 -15px 40px rgba(0, 40, 80, 0.12);
+    border: 1px solid rgba(255, 255, 255, 1);
+    border-bottom: none;
+    z-index: 2100;  /* trên overlay, dưới modal (3000) */
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.cart-drawer.active {
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.cart-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.cart-drawer-title {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--accent-blue);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cart-drawer-close {
+    font-size: 1.3rem;
+    cursor: pointer;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.cart-drawer-close:hover {
+    background: var(--error-red);
+    color: #fff;
+    border-color: var(--error-red);
+}
+
+.cart-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 20px;
+}
+
+/* PC & Tablet Large: Drawer trượt từ bên phải */
+@media (min-width: 969px) {
+    .cart-drawer {
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: auto;
+        width: 100%;
+        max-width: 480px;
+        height: 100vh;
+        border-top-left-radius: 28px;
+        border-top-right-radius: 0;
+        border-left: 1px solid rgba(255, 255, 255, 1);
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.35s ease;
+    }
+
+    .cart-drawer.active {
+        transform: translateX(0);
+    }
+}
+
+/* Điều chỉnh lại layout chính khi có drawer */
+.two-column-layout {
+    display: block;
+    /* Chuyển thành một cột rộng rãi dễ nhìn */
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.column-left {
+    width: 100%;
+}
+
+.column-right {
+    display: none;
+    /* Ẩn cột phải tĩnh trên giao diện chính, vì đã chuyển vào Drawer */
+}
+
+/* ==============================================================================
+   BREAKPOINT TRUNG GIAN: Tablet nhỏ, điện thoại lớn (601px - 768px)
+   ============================================================================== */
+@media (max-width: 768px) {
+    .mobile-hide {
+        display: none !important;
+    }
+
+    header h1 {
+        font-size: clamp(0.9rem, 3.5vw, 1.2rem) !important;
+    }
+
+    header .user-info-bar {
+        font-size: clamp(0.7rem, 2.5vw, 0.85rem) !important;
+        gap: 10px !important;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* Manual list: không dư khoảng trắng 2 bên */
+    .manual-device-list {
+        padding: 3px !important;
+        max-height: 50dvh !important;
+    }
+
+    .manual-device-item {
+        padding: 7px 8px !important;
+        gap: 8px !important;
+    }
+
+    .manual-device-item img {
+        width: 38px !important;
+        height: 38px !important;
+        flex-shrink: 0;
+    }
+
+    .manual-device-item-info strong {
+        font-size: clamp(0.78rem, 2.8vw, 0.92rem) !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 140px;
+    }
+
+    .manual-device-item-info span {
+        font-size: clamp(0.65rem, 2.2vw, 0.78rem) !important;
+    }
+
+    .badge-status {
+        font-size: 0.68rem !important;
+        padding: 2px 5px !important;
+        white-space: nowrap;
+    }
+
+    .manual-device-item-actions {
+        flex-shrink: 0;
+        gap: 5px !important;
+    }
+
+    /* Nút chỉ hiển thị icon - không có chữ */
+    .btn-view-details,
+    .manual-device-btn-add {
+        padding: 5px 8px !important;
+        font-size: 0.95rem !important;
+        border-radius: 7px !important;
+        min-width: 32px;
+        justify-content: center;
+    }
+
+    .mode-card {
+        padding: 10px 8px !important;
+        border-radius: 14px !important;
+    }
+
+    .mode-card-icon {
+        font-size: 1.5rem !important;
+    }
+
+    .mode-card-title {
+        font-size: 0.82rem !important;
+    }
+
+    .mode-card-desc {
+        font-size: 0.68rem !important;
+    }
+
+    /* Panel chính bên trái - giảm padding */
+    .column-left.admin-card {
+        padding: 0px !important;
+    }
+}
+
+/* TỐI ƯU HÓA KHÔNG GIAN VÀ SCALING FONT CHỮ TRÊN ĐIỆN THOẠI */
+@media (max-width: 600px) {
+    body {
+        font-size: 0.85rem !important;
+        /* Thu nhỏ cỡ chữ nền di động */
+    }
+
+    header {
+        padding: 6px 10px !important;
+    }
+
+    header h1 {
+        font-size: 1.05rem !important;
+        /* Thu nhỏ tiêu đề VLUTE */
+    }
+
+    header .user-info-bar {
+        padding: 2px 8px !important;
+        font-size: 0.72rem !important;
+        gap: 8px !important;
+    }
+
+    .container {
+        padding: 2px !important;
+        margin: 6px auto !important;
+        border-radius: 14px !important;
+        width: 99% !important;
+    }
+
+    .column-left.admin-card {
+        padding: 0px !important;
+    }
+
+    /* Bộ chọn chế độ mượn QR vs Thủ công */
+    .borrow-mode-selector {
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .mode-card {
+        padding: 8px 6px !important;
+        border-radius: 12px !important;
+        gap: 4px !important;
+    }
+
+    .mode-card-icon {
+        font-size: 1.35rem !important;
+    }
+
+    .mode-card-title {
+        font-size: 0.78rem !important;
+    }
+
+    .mode-card-desc {
+        font-size: 0.65rem !important;
+        display: none;
+        /* Ẩn bớt mô tả trên màn hình siêu nhỏ để tránh chật chội */
+    }
+
+    /* Danh sách thiết bị thủ công - không dư khoảng 2 bên */
+    .manual-device-list {
+        padding: 2px !important;
+        max-height: 48dvh !important;
+    }
+
+    /* Thẻ thiết bị trong danh sách thủ công */
+    .manual-device-item {
+        padding: 5px 6px !important;
+        gap: 6px !important;
+        margin-bottom: 3px !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .manual-device-item img {
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 5px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .manual-device-item-info {
+        min-width: 0 !important;
+        /* cho phép co lại để tránh overflow */
+        flex: 1 !important;
+    }
+
+    .manual-device-item-info strong {
+        font-size: 0.8rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        display: block !important;
+    }
+
+    .manual-device-item-info span {
+        font-size: 0.68rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .manual-device-item-actions {
+        flex-shrink: 0 !important;
+        gap: 4px !important;
+    }
+
+    .badge-status {
+        font-size: 0.65rem !important;
+        padding: 1px 4px !important;
+        white-space: nowrap !important;
+    }
+
+    /* Nút chỉ icon trên điện thoại */
+    .btn-view-details,
+    .manual-device-btn-add {
+        font-size: 1rem !important;
+        padding: 4px 6px !important;
+        border-radius: 6px !important;
+        min-width: 30px !important;
+        justify-content: center !important;
+    }
+
+    /* Khung quét QR */
+    .btn-qr-scan {
+        padding: 10px 18px !important;
+        font-size: 0.88rem !important;
+        border-radius: 10px !important;
+    }
+
+    #reader {
+        max-width: 280px !important;
+        border-radius: 12px !important;
+    }
+
+    /* Giỏ hàng nổi và Drawer di động */
+    .floating-cart-trigger {
+        bottom: 15px !important;
+        right: 15px !important;
+        width: 52px !important;
+        height: 52px !important;
+        font-size: 1.25rem !important;
+    }
+
+    .floating-cart-badge {
+        font-size: 0.7rem !important;
+        min-width: 20px !important;
+        height: 20px !important;
+        top: -4px !important;
+        right: -4px !important;
+    }
+
+    .cart-drawer {
+        height: 85vh !important;
+        border-top-left-radius: 20px !important;
+        border-top-right-radius: 20px !important;
+    }
+
+    .cart-drawer-header {
+        padding: 12px 16px !important;
+    }
+
+    .cart-drawer-title {
+        font-size: 1.05rem !important;
+    }
+
+    .cart-drawer-close {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 1.2rem !important;
+    }
+
+    .cart-drawer-body {
+        padding: 5px 16px !important;
+    }
+
+    /* Selected card inside Drawer */
+    .selected-device-card {
+        padding: 8px !important;
+        border-radius: 12px !important;
+        gap: 6px !important;
+    }
+
+    .selected-device-card img {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 6px !important;
+    }
+
+    .selected-device-card-info strong {
+        font-size: 0.88rem !important;
+    }
+
+    .selected-device-card-actions {
+        padding: 6px !important;
+        border-radius: 8px !important;
+        gap: 6px !important;
+    }
+
+    .qty-control input[type="text"] {
+        width: 36px !important;
+        height: 26px !important;
+        font-size: 0.8rem !important;
+    }
+
+    .qty-button {
+        width: 26px !important;
+        height: 26px !important;
+        border-radius: 4px !important;
+    }
+
+    .selected-device-card-review {
+        padding: 8px !important;
+        border-radius: 8px !important;
+    }
+
+    .selected-device-card-review select {
+        height: 30px !important;
+        font-size: 0.78rem !important;
+        padding: 2px 6px !important;
+    }
+
+    .selected-device-card-review textarea {
+        height: 40px !important;
+        font-size: 0.78rem !important;
+    }
+
+    /* Modal Xem chi tiết di động */
+    .modal-content {
+        padding: 15px !important;
+        border-radius: 16px !important;
+    }
+
+    .modal-title {
+        font-size: 1.1rem !important;
+        margin-bottom: 10px !important;
+    }
+
+    .modal-close {
+        width: 18px !important;
+        height: 18px !important;
+        font-size: 0.95rem !important;
+        top: 6px !important;
+        right: 6px !important;
+    }
+
+    .info-grid {
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .info-item {
+        padding: 6px 10px !important;
+    }
+
+    .info-item span:first-child {
+        font-size: 0.7rem !important;
+    }
+
+    .info-item span:last-child {
+        font-size: 0.85rem !important;
+    }
+
+    .history-title {
+        font-size: 0.9rem !important;
+        margin-top: 12px !important;
+    }
+
+    .history-card {
+        padding: 8px 10px !important;
+        border-radius: 8px !important;
+    }
+
+    .history-card-user {
+        font-size: 0.8rem !important;
+    }
+
+    .history-card-date {
+        font-size: 0.7rem !important;
+    }
+
+    .history-card-body {
+        font-size: 0.75rem !important;
+    }
+}
+
+/* ==============================================================================
+   REDESIGNED MANUAL DEVICE ITEM - COMPACT LAYOUT
+   ============================================================================== */
+
+/* Thumbnail trong item chọn thủ công */
+.mdi-thumb {
+    width: 46px;
+    height: 46px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    flex-shrink: 0;
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+}
+
+.mdi-thumb:hover {
+    transform: scale(1.08);
+}
+
+.mdi-no-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    background: #f1f5f9;
+    color: var(--text-muted);
+    cursor: default;
+}
+
+/* Hàng tên + dot trạng thái */
+.mdi-name-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.3;
+}
+
+.mdi-name-row strong {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    word-break: break-word;
+    flex: 1;
+}
+
+/* Dot trạng thái nhỏ gọn - thay cho badge lớn */
+.status-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+    border: 1.5px solid rgba(0, 0, 0, 0.12);
+    cursor: help;
+}
+
+.dot-good {
+    background: #10b981;
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.dot-warn {
+    background: #f59e0b;
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.dot-bad {
+    background: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Mã và số lượng */
+.mdi-code {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.mdi-code code {
+    color: var(--accent-blue);
+    font-weight: 700;
+    font-size: 0.75rem;
+}
+
+.mdi-qty {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 1px;
+}
+
+.mdi-qty strong {
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
+/* Nút icon xếp dọc */
+.manual-device-item-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.btn-mdi {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.btn-mdi-detail {
+    background: rgba(0, 86, 179, 0.07);
+    border: 1px solid rgba(0, 86, 179, 0.18);
+    color: var(--accent-blue);
+}
+
+.btn-mdi-detail:hover {
+    background: var(--accent-blue);
+    color: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 3px 10px rgba(0, 86, 179, 0.2);
+}
+
+.btn-mdi-add {
+    background: var(--accent-blue);
+    color: #fff;
+    font-weight: bold;
+}
+
+.btn-mdi-add:hover {
+    background: var(--accent-blue-hover);
+    transform: scale(1.1);
+    box-shadow: 0 3px 10px rgba(0, 86, 179, 0.25);
+}
+
+.btn-mdi-selected {
+    background: var(--success-green) !important;
+    font-size: 0.85rem !important;
+}
+
+/* Responsive điều chỉnh cho màn nhỏ */
+@media (max-width: 768px) {
+    .mdi-thumb {
+        width: 40px;
+        height: 40px;
+        border-radius: 7px;
+    }
+
+    .mdi-name-row strong {
+        font-size: 0.85rem;
+    }
+
+    .btn-mdi {
+        width: 28px;
+        height: 28px;
+        font-size: 0.88rem;
+        border-radius: 7px;
+    }
+
+    .manual-device-list {
+        max-height: calc(100dvh - 280px) !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .mdi-thumb {
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 6px !important;
+    }
+
+    .mdi-name-row strong {
+        font-size: 0.8rem !important;
+    }
+
+    .mdi-code,
+    .mdi-qty {
+        font-size: 0.7rem !important;
+    }
+
+    .btn-mdi {
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 0.82rem !important;
+        border-radius: 6px !important;
+    }
+
+    .status-dot {
+        width: 8px !important;
+        height: 8px !important;
+        margin-top: 3px !important;
+    }
+
+    .manual-device-list {
+        max-height: calc(100dvh - 260px) !important;
+    }
+
+    .search-input {
+        height: 32px !important;
+        font-size: 0.82rem !important;
+        padding: 5px 10px !important;
+    }
+}
+
+
+/* ==============================================================================
+   DEVICE TABLE - BẢNG THIẾT BỊ DẠNG CỘT CÓ SCROLL NGANG
+   ============================================================================== */
+
+/* Wrapper: scroll ngang trên mobile, sticky cột đầu */
+.device-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: calc(100dvh - 300px);
+    min-height: 200px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.45);
+    -webkit-overflow-scrolling: touch;
+    /* subtle scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 86, 179, 0.2) transparent;
+}
+
+.device-table {
+    width: 100%;
+    min-width: 680px;
+    /* bảng tối thiểu đủ rộng */
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    table-layout: auto;
+}
+
+/* Header bảng */
+.device-table thead tr {
+    background: rgba(0, 86, 179, 0.04);
+    border-bottom: 2px solid rgba(0, 86, 179, 0.12);
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+.device-table th {
+    padding: 8px 10px;
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--accent-blue);
+    text-align: left;
+    white-space: nowrap;
+    background: rgba(241, 245, 249, 0.98);
+    border-bottom: 2px solid rgba(0, 86, 179, 0.1);
+}
+
+/* Cột tên: sticky bên trái */
+.device-table th.dt-col-name,
+.device-table td.dt-col-name {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: inherit;
+    min-width: 160px;
+    max-width: 200px;
+}
+
+.device-table thead th.dt-col-name {
+    z-index: 4;
+    background: rgba(241, 245, 249, 0.98);
+}
+
+/* Các hàng dữ liệu */
+.dt-row {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    transition: background 0.15s ease;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.dt-row:last-child {
+    border-bottom: none;
+}
+
+.dt-row:hover {
+    background: rgba(0, 86, 179, 0.035) !important;
+}
+
+.dt-row.active {
+    background: rgba(16, 185, 129, 0.05) !important;
+    border-left: 3px solid var(--success-green);
+}
+
+.device-table td {
+    padding: 8px 10px;
+    vertical-align: middle;
+    color: var(--text-primary);
+}
+
+/* Ô tên + ảnh */
+.dt-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px !important;
+}
+
+.dt-thumb {
+    width: 36px;
+    height: 36px;
+    border-radius: 7px;
+    object-fit: cover;
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+    cursor: zoom-in;
+    transition: transform 0.2s;
+}
+
+.dt-thumb:hover {
+    transform: scale(1.12);
+}
+
+.dt-no-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    background: #f1f5f9;
+    cursor: default;
+}
+
+.dt-name {
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+/* Mã thiết bị */
+.dt-code {
+    font-size: 0.76rem;
+    color: var(--accent-blue);
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    background: rgba(0, 86, 179, 0.06);
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+/* Số lượng */
+.dt-qty {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--success-green);
+}
+
+.dt-qty.dt-qty-low {
+    color: var(--warning-yellow);
+}
+
+.dt-qty.dt-qty-empty {
+    color: var(--error-red);
+}
+
+.dt-qty-total {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-left: 2px;
+}
+
+/* Chất lượng */
+.dt-col-quality {
+    white-space: nowrap;
+}
+
+.dt-quality-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.dt-quality-dot.dot-good {
+    background: #10b981;
+}
+
+.dt-quality-dot.dot-warn {
+    background: #f59e0b;
+}
+
+.dt-quality-dot.dot-bad {
+    background: #ef4444;
+}
+
+.dt-quality-text {
+    font-size: 0.77rem;
+    color: var(--text-secondary);
+    vertical-align: middle;
+}
+
+/* Utilities */
+.dt-muted {
+    color: var(--text-muted);
+    font-size: 0.77rem;
+}
+
+.dt-center {
+    text-align: center;
+}
+
+/* Cột kích thước */
+.dt-col-id {
+    min-width: 68px;
+}
+
+.dt-col-loc {
+    min-width: 90px;
+}
+
+.dt-col-year {
+    min-width: 52px;
+    text-align: center;
+}
+
+.dt-col-qty {
+    min-width: 56px;
+    text-align: center;
+}
+
+.dt-col-quality {
+    min-width: 100px;
+}
+
+.dt-col-mgr {
+    min-width: 110px;
+}
+
+.dt-col-act {
+    min-width: 68px;
+    white-space: nowrap;
+}
+
+/* Nút hành động trong bảng */
+.dt-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+}
+
+/* Responsive: mobile nhỏ */
+@media (max-width: 600px) {
+    .device-table-wrap {
+        max-height: calc(100dvh - 250px) !important;
+        border-radius: 10px;
+    }
+
+    .device-table {
+        font-size: 0.78rem;
+    }
+
+    .device-table th {
+        font-size: 0.65rem;
+        padding: 6px 7px;
+    }
+
+    .device-table td {
+        padding: 6px 7px;
+    }
+
+    .dt-name-cell {
+        padding: 5px 7px !important;
+    }
+
+    .dt-thumb {
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+    }
+
+    .dt-name {
+        font-size: 0.77rem;
+    }
+
+    .dt-col-name {
+        min-width: 130px;
+        max-width: 160px;
+    }
+}
+
+/* ==============================================================================
+   COMPACT CARD LIST (.cl-list) — Danh sách chọn thiết bị tối giản
+   ============================================================================== */
+.cl-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    overflow-y: auto;
+    max-height: calc(100dvh - 300px);
+    min-height: 180px;
+    padding: 3px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.cl-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--cat-color, #0284c7) 8%, rgba(255, 255, 255, 0.65));
+    border: 1px solid color-mix(in srgb, var(--cat-color, #0284c7) 25%, rgba(255, 255, 255, 0.4));
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    cursor: default;
+}
+
+.cl-item:hover {
+    background: color-mix(in srgb, var(--cat-color, #0284c7) 15%, rgba(255, 255, 255, 0.85));
+    border-color: var(--cat-color, #0284c7);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--cat-color, #0284c7) 20%, transparent);
+}
+
+.cl-item.active {
+    background: color-mix(in srgb, var(--cat-color, #0284c7) 25%, rgba(255, 255, 255, 0.5));
+    border-color: var(--cat-color, #0284c7);
+    border-width: 2px;
+    padding: 7px 9px;
+}
+
+/* Thumbnail */
+.cl-thumb {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+    cursor: zoom-in;
+    transition: transform 0.2s;
+}
+
+.cl-thumb:hover {
+    transform: scale(1.1);
+}
+
+.cl-no-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    background: #f1f5f9;
+    cursor: default;
+}
+
+/* Khu thông tin */
+.cl-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cl-name-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cl-name-toggle {
+    background: rgba(2, 132, 199, 0.06);
+    border: none;
+    color: var(--accent-blue);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95rem;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    outline: none;
+    height: 18px;
+    width: 18px;
+    flex-shrink: 0;
+    margin-left: 6px;
+    line-height: 1;
+}
+
+.cl-name-toggle:hover {
+    background: rgba(2, 132, 199, 0.15);
+    transform: scale(1.15);
+}
+
+.cl-name {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+    word-break: break-word;
+    flex: 1;
+    letter-spacing: -0.01em;
+}
+
+/* Status dot */
+.cl-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 3px;
+    border: 1.5px solid rgba(0, 0, 0, 0.1);
+    cursor: help;
+}
+
+.cl-dot.dot-good {
+    background: #10b981;
+}
+
+.cl-dot.dot-warn {
+    background: #f59e0b;
+}
+
+.cl-dot.dot-bad {
+    background: #ef4444;
+}
+
+/* Meta row: mã trái | năm+trạng thái phải */
+.cl-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 4px;
+    min-width: 0;
+}
+
+.cl-code {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    background: rgba(0, 86, 179, 0.08);
+    padding: 2px 5px;
+    border-radius: 4px;
+    letter-spacing: 0.15px;
+    line-height: 1.4;
+    word-break: break-all;   /* mã dài xuống 2 dòng được */
+    flex: 1;
+    min-width: 0;
+    font-family: 'Courier New', monospace;
+}
+
+/* Nhóm năm + biểu tượng trạng thái luôn sát phải */
+.cl-right-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.cl-year {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.3px;
+}
+
+.cl-qty {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 10px;
+}
+
+.cl-qty-ok {
+    color: #047857;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.cl-qty-low {
+    color: #b45309;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.cl-qty-empty {
+    color: #b91c1c;
+    background: rgba(239, 68, 68, 0.1);
+    text-decoration: line-through;
+}
+
+.cl-qty-sep {
+    font-weight: 400;
+    opacity: 0.6;
+    font-size: 0.7rem;
+}
+
+/* Action buttons column */
+.cl-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cl-list {
+        max-height: calc(100dvh - 270px) !important;
+    }
+
+    .cl-thumb {
+        width: 48px;
+        height: 48px;
+    }
+
+    .cl-name {
+        font-size: 0.83rem;
+    }
+
+    .cl-code {
+        font-size: 0.69rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .cl-list {
+        max-height: calc(100dvh - 250px) !important;
+        padding: 1px;
+    }
+
+    .cl-item {
+        padding: 4px 2px;
+        gap: 4px;
+    }
+
+    .cl-item.active {
+        padding: 3px 1px;
+    }
+
+    .cl-thumb {
+        width: 48px;
+        height: 48px;
+        border-radius: 3px;
+    }
+
+    .cl-name {
+        font-size: 0.79rem !important;
+    }
+
+    .cl-code {
+        font-size: 0.66rem;
+    }
+
+    .cl-year {
+        font-size: 0.66rem;
+    }
+
+    .cl-qty {
+        font-size: 0.7rem;
+    }
+}
