@@ -2,6 +2,7 @@
 .env
 device_manager/.env
 device_manager/src/config.php.bak
+device_manager/src/uploads/
 
 # Python caches và cookies
 __pycache__/
