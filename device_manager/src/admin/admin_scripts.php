@@ -1102,9 +1102,12 @@
     // Global click listener for zoomable thumbnails (delegation)
     document.addEventListener("click", function(e) {
         const thumb = e.target.closest(".zoomable-thumb");
-        if (thumb && thumb.tagName === "IMG" && thumb.src) {
+        if (thumb && thumb.tagName === "IMG") {
             e.stopPropagation();
-            zoomImage(thumb.src);
+            const zoomSrc = thumb.dataset.zoom || thumb.src;
+            if (zoomSrc) {
+                zoomImage(zoomSrc);
+            }
         }
     });
 
