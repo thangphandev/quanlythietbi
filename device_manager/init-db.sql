@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS loai (
 -- 6. Bảng Thiết bị
 CREATE TABLE IF NOT EXISTS thiet_bi (
     id SERIAL PRIMARY KEY,
-    ma_thiet_bi VARCHAR(50) UNIQUE NOT NULL,       -- Mã thiết bị dùng cho QR Code (VD: TB-001, TB-002)
+    ma_thiet_bi VARCHAR(100) UNIQUE NOT NULL,       -- Mã thiết bị dùng cho QR Code (VD: TB-001, TB-002)
     ten_thiet_bi VARCHAR(255) NOT NULL,            -- Tên thiết bị
     vi_tri VARCHAR(255) DEFAULT 'Phòng thiết bị',   -- Vị trí đặt thiết bị (Ví dụ: Xưởng Động lực)
     nam_su_dung INT,                               -- Năm đưa vào sử dụng (Ví dụ: 2022)

@@ -24,6 +24,9 @@ RUN a2enmod rewrite
 # Cấu hình bảo mật thư mục và cho phép ghi đè trong Apache
 RUN sed -ri -e 's!AllowOverride None!AllowOverride All!g' /etc/apache2/apache2.conf
 
+# Tăng giới hạn tải tệp của PHP lên 20MB
+RUN echo "upload_max_filesize = 20M\npost_max_size = 25M\nmemory_limit = 256M" > /usr/local/etc/php/conf.d/uploads.ini
+
 # Đặt thư mục làm việc mặc định
 WORKDIR /var/www/html
 

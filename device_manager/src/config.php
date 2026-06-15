@@ -121,6 +121,9 @@ try {
         $db->query("UPDATE loai SET ma_mau = '#8b5cf6' WHERE ten_loai = 'Công cụ cầm tay' AND (ma_mau IS NULL OR ma_mau = '#0284c7')");
     }
 
+    // Tăng giới hạn độ dài mã thiết bị lên 100 ký tự
+    $db->query("ALTER TABLE thiet_bi ALTER COLUMN ma_thiet_bi TYPE VARCHAR(100)");
+
     $db->query("ALTER TABLE thiet_bi ADD COLUMN IF NOT EXISTS hinh_anh VARCHAR(255) DEFAULT NULL");
     $db->query("ALTER TABLE giang_vien ADD COLUMN IF NOT EXISTS so_dien_thoai VARCHAR(50) DEFAULT NULL");
     
