@@ -116,8 +116,11 @@
                         </td>
                         <td>
                             <div style="display: flex; align-items: center; gap: 12px;">
-                                <?php if (!empty($d['hinh_anh'])): ?>
-                                    <img src="uploads/<?= htmlspecialchars($d['hinh_anh']) ?>" class="thietbi-hinh zoomable-thumb" alt="Device" style="width:70px; height:70px; object-fit:cover; border-radius:8px; cursor:zoom-in;">
+                                <?php if (!empty($d['hinh_anh'])): 
+                                    $thumb_file = 'uploads/thumb_' . $d['hinh_anh'];
+                                    $img_src = file_exists($thumb_file) ? $thumb_file : 'uploads/' . $d['hinh_anh'];
+                                ?>
+                                    <img src="<?= htmlspecialchars($img_src) ?>" data-zoom="uploads/<?= htmlspecialchars($d['hinh_anh']) ?>" class="thietbi-hinh zoomable-thumb" alt="Device" style="width:70px; height:70px; object-fit:cover; border-radius:8px; cursor:zoom-in;">
                                 <?php else: ?>
                                     <div class="thietbi-hinh" style="width:70px; height:70px; display:flex; align-items:center; justify-content:center; background:#f1f5f9; color:var(--text-muted); font-size:0.75rem; border-radius:8px;">No img</div>
                                 <?php endif; ?>

@@ -11,6 +11,73 @@
  * - Nhập danh sách thiết bị từ CSV
  */
 
+/**
+ * Tạo ảnh nhỏ (thumbnail) và nén dung lượng duy trì tỉ lệ
+ */
+function create_thumbnail($src, $dest, $max_w = 200, $max_h = 200) {
+    list($orig_w, $orig_h, $type) = getimagesize($src);
+    if (!$orig_w || !$orig_h) return false;
+    
+    $ratio = min($max_w / $orig_w, $max_h / $orig_h);
+    if ($ratio >= 1) {
+        $new_w = $orig_w;
+        $new_h = $orig_h;
+    } else {
+        $new_w = round($orig_w * $ratio);
+        $new_h = round($orig_h * $ratio);
+    }
+    
+    $new_img = imagecreatetruecolor($new_w, $new_h);
+    
+    switch ($type) {
+        case IMAGETYPE_JPEG:
+            $source = imagecreatefromjpeg($src);
+            break;
+        case IMAGETYPE_PNG:
+            $source = imagecreatefrompng($src);
+            imagealphablending($new_img, false);
+            imagesavealpha($new_img, true);
+            break;
+        case IMAGETYPE_WEBP:
+            if (function_exists('imagecreatefromwebp')) {
+                $source = imagecreatefromwebp($src);
+            } else {
+                return false;
+            }
+            break;
+        case IMAGETYPE_GIF:
+            $source = imagecreatefromgif($src);
+            break;
+        default:
+            return false;
+    }
+    
+    if (!$source) return false;
+    
+    imagecopyresampled($new_img, $source, 0, 0, 0, 0, $new_w, $new_h, $orig_w, $orig_h);
+    
+    $success = false;
+    switch ($type) {
+        case IMAGETYPE_JPEG:
+            $success = imagejpeg($new_img, $dest, 75);
+            break;
+        case IMAGETYPE_PNG:
+            $success = imagepng($new_img, $dest, 6);
+            break;
+        case IMAGETYPE_WEBP:
+            $success = imagewebp($new_img, $dest, 75);
+            break;
+        case IMAGETYPE_GIF:
+            $success = imagegif($new_img, $dest);
+            break;
+    }
+    
+    imagedestroy($new_img);
+    imagedestroy($source);
+    
+    return $success;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
     $action = $_POST['admin_action'];
     
@@ -31,6 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
             $new_name = 'device_' . uniqid() . '.' . $ext;
             if (move_uploaded_file($_FILES['hinh_anh']['tmp_name'], 'uploads/' . $new_name)) {
                 $hinh_anh = $new_name;
+                // Tạo ảnh nhỏ (thumbnail) kích thước tối đa 200x200
+                create_thumbnail('uploads/' . $new_name, 'uploads/thumb_' . $new_name, 400, 400);
             }
         }
         
@@ -79,6 +148,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
                     if (move_uploaded_file($_FILES['hinh_anh']['tmp_name'], 'uploads/' . $new_name)) {
                         $image_sql = ", hinh_anh = :hinh_anh";
                         $params['hinh_anh'] = $new_name;
+                        // Tạo ảnh nhỏ (thumbnail) kích thước tối đa 200x200
+                        create_thumbnail('uploads/' . $new_name, 'uploads/thumb_' . $new_name, 200, 200);
                     }
                 }
                 

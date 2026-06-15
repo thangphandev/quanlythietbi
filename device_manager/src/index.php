@@ -383,8 +383,11 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
                             }
                         ?>
                         <div class="cl-item <?= $item_damaged_cls ?>" style="--cat-color: <?= htmlspecialchars($d['ma_mau'] ?: '#0284c7') ?>;" data-id="<?= $d['id'] ?>" data-ma="<?= htmlspecialchars(strtolower($d['ma_thiet_bi'])) ?>" data-ten="<?= htmlspecialchars(strtolower($d['ten_thiet_bi'])) ?>" data-category="<?= htmlspecialchars(strtolower($d['ten_loai'] ?: '')) ?>">
-                            <?php if (!empty($d['hinh_anh'])): ?>
-                                <img src="uploads/<?= htmlspecialchars($d['hinh_anh']) ?>" class="cl-thumb zoomable-thumb" alt="Device thumbnail">
+                            <?php if (!empty($d['hinh_anh'])): 
+                                $thumb_file = 'uploads/thumb_' . $d['hinh_anh'];
+                                $img_src = file_exists($thumb_file) ? $thumb_file : 'uploads/' . $d['hinh_anh'];
+                            ?>
+                                <img src="<?= htmlspecialchars($img_src) ?>" data-zoom="uploads/<?= htmlspecialchars($d['hinh_anh']) ?>" class="cl-thumb zoomable-thumb" alt="Device thumbnail">
                             <?php else: ?>
                                 <div class="cl-thumb cl-no-img">📦</div>
                             <?php endif; ?>
@@ -771,9 +774,12 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
         // Global click listener for zoomable thumbnails (delegation)
         document.addEventListener("click", function(e) {
             const thumb = e.target.closest(".zoomable-thumb");
-            if (thumb && thumb.tagName === "IMG" && thumb.src) {
+            if (thumb && thumb.tagName === "IMG") {
                 e.stopPropagation();
-                zoomImage(thumb.src);
+                const zoomSrc = thumb.dataset.zoom || thumb.src;
+                if (zoomSrc) {
+                    zoomImage(zoomSrc);
+                }
             }
         });
 
@@ -937,10 +943,16 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
                     // Nạp ảnh thiết bị
                     const mImg = document.getElementById("m_hinh_anh");
                     if (data.hinh_anh) {
-                        mImg.src = "uploads/" + data.hinh_anh;
+                        mImg.src = "uploads/thumb_" + data.hinh_anh;
+                        mImg.dataset.zoom = "uploads/" + data.hinh_anh;
+                        mImg.onerror = function() {
+                            this.src = "uploads/" + data.hinh_anh;
+                            this.onerror = null;
+                        };
                         mImg.style.display = "inline-block";
                     } else {
                         mImg.src = "";
+                        mImg.dataset.zoom = "";
                         mImg.style.display = "none";
                     }
                     
@@ -1165,7 +1177,7 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
                 const isDamaged = itemState.condition === 'Hư hỏng' || itemState.condition === 'Lỗi nhẹ';
 
                 const thumbHtml = device.hinh_anh
-                    ? `<img src="uploads/${device.hinh_anh}" class="sdc-thumb zoomable-thumb" alt="${device.ten_thiet_bi}">`
+                    ? `<img src="uploads/thumb_${device.hinh_anh}" data-zoom="uploads/${device.hinh_anh}" onerror="this.onerror=null; this.src='uploads/${device.hinh_anh}';" class="sdc-thumb zoomable-thumb" alt="${device.ten_thiet_bi}">`
                     : `<div class="sdc-thumb sdc-thumb-noimg">📦</div>`;
 
                 const condLabel = itemState.condition === 'Hư hỏng' ? '🔴 Hư hỏng'
