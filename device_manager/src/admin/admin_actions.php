@@ -15,6 +15,11 @@
  * Tạo ảnh nhỏ (thumbnail) và nén dung lượng duy trì tỉ lệ
  */
 function create_thumbnail($src, $dest, $max_w = 200, $max_h = 200) {
+    // Kiểm tra xem thư viện GD có được cài đặt không
+    if (!function_exists('imagecreatetruecolor')) {
+        return false;
+    }
+    
     list($orig_w, $orig_h, $type) = getimagesize($src);
     if (!$orig_w || !$orig_h) return false;
     
@@ -29,46 +34,60 @@ function create_thumbnail($src, $dest, $max_w = 200, $max_h = 200) {
     
     $new_img = imagecreatetruecolor($new_w, $new_h);
     
+    $source = null;
     switch ($type) {
         case IMAGETYPE_JPEG:
-            $source = imagecreatefromjpeg($src);
+            if (function_exists('imagecreatefromjpeg')) {
+                $source = @imagecreatefromjpeg($src);
+            }
             break;
         case IMAGETYPE_PNG:
-            $source = imagecreatefrompng($src);
-            imagealphablending($new_img, false);
-            imagesavealpha($new_img, true);
+            if (function_exists('imagecreatefrompng')) {
+                $source = @imagecreatefrompng($src);
+                imagealphablending($new_img, false);
+                imagesavealpha($new_img, true);
+            }
             break;
         case IMAGETYPE_WEBP:
             if (function_exists('imagecreatefromwebp')) {
-                $source = imagecreatefromwebp($src);
-            } else {
-                return false;
+                $source = @imagecreatefromwebp($src);
             }
             break;
         case IMAGETYPE_GIF:
-            $source = imagecreatefromgif($src);
+            if (function_exists('imagecreatefromgif')) {
+                $source = @imagecreatefromgif($src);
+            }
             break;
-        default:
-            return false;
     }
     
-    if (!$source) return false;
+    if (!$source) {
+        imagedestroy($new_img);
+        return false;
+    }
     
     imagecopyresampled($new_img, $source, 0, 0, 0, 0, $new_w, $new_h, $orig_w, $orig_h);
     
     $success = false;
     switch ($type) {
         case IMAGETYPE_JPEG:
-            $success = imagejpeg($new_img, $dest, 75);
+            if (function_exists('imagejpeg')) {
+                $success = imagejpeg($new_img, $dest, 75);
+            }
             break;
         case IMAGETYPE_PNG:
-            $success = imagepng($new_img, $dest, 6);
+            if (function_exists('imagepng')) {
+                $success = imagepng($new_img, $dest, 6);
+            }
             break;
         case IMAGETYPE_WEBP:
-            $success = imagewebp($new_img, $dest, 75);
+            if (function_exists('imagewebp')) {
+                $success = imagewebp($new_img, $dest, 75);
+            }
             break;
         case IMAGETYPE_GIF:
-            $success = imagegif($new_img, $dest);
+            if (function_exists('imagegif')) {
+                $success = imagegif($new_img, $dest);
+            }
             break;
     }
     

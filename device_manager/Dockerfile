@@ -1,15 +1,19 @@
 FROM php:8.2-apache
 
-# Cập nhật hệ thống và cài đặt thư viện cần thiết cho PostgreSQL
+# Cập nhật hệ thống và cài đặt thư viện cần thiết cho PostgreSQL, JPEG, WebP, FreeType
 RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
     libpq-dev \
     libpng-dev \
+    libjpeg-dev \
+    libwebp-dev \
+    libfreetype6-dev \
     libzip-dev \
     zip \
     unzip \
     python3 \
     python3-pip \
     python3-venv \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install pdo pdo_pgsql zip gd
 
 # Cài đặt các thư viện Python cần thiết cho Trình cào TKB (crawler.py)
