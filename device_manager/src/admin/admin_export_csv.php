@@ -49,13 +49,13 @@ if (isset($_GET['action']) && $_GET['action'] === 'export_csv') {
     <body>
     <table>
         <tr>
-            <td colspan="6" class="title">DANH SÁCH THIẾT BỊ TRÊN HỆ THỐNG</td>
+            <td colspan="7" class="title">DANH SÁCH THIẾT BỊ TRÊN HỆ THỐNG</td>
         </tr>
         <tr>
-            <td colspan="6" class="subtitle">Ngày xuất báo cáo: <?= date('d/m/Y H:i:s') ?></td>
+            <td colspan="7" class="subtitle">Ngày xuất báo cáo: <?= date('d/m/Y H:i:s') ?></td>
         </tr>
         <tr>
-            <td colspan="6" style="border:none; height:10px;"></td>
+            <td colspan="7" style="border:none; height:10px;"></td>
         </tr>
         <tr class="header-row">
             <th style="width: 130px;" class="header-cell">Mã thiết bị</th>
@@ -64,13 +64,15 @@ if (isset($_GET['action']) && $_GET['action'] === 'export_csv') {
             <th style="width: 200px;" class="header-cell">Vị trí đặt</th>
             <th style="width: 110px;" class="header-cell">Năm sử dụng</th>
             <th style="width: 250px;" class="header-cell">Tình trạng chất lượng</th>
+            <th style="width: 220px;" class="header-cell">Giáo viên quản lý</th>
         </tr>
         <?php
         try {
             $stmt = $db->query("
-                SELECT tb.ma_thiet_bi, tb.ten_thiet_bi, tb.vi_tri, tb.nam_su_dung, tb.chat_luong, l.ten_loai 
+                SELECT tb.ma_thiet_bi, tb.ten_thiet_bi, tb.vi_tri, tb.nam_su_dung, tb.chat_luong, l.ten_loai, gv.ho_ten_gv 
                 FROM thiet_bi tb 
                 LEFT JOIN loai l ON tb.id_loai = l.id_loai 
+                LEFT JOIN giang_vien gv ON tb.id_giang_vien_quan_ly = gv.id_giang_vien
                 ORDER BY tb.ten_thiet_bi ASC
             ");
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -82,6 +84,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'export_csv') {
                     <td class="data-cell text-left"><?= htmlspecialchars($row['vi_tri']) ?></td>
                     <td class="data-cell text-center"><?= htmlspecialchars($row['nam_su_dung']) ?></td>
                     <td class="data-cell text-left"><?= htmlspecialchars($row['chat_luong']) ?></td>
+                    <td class="data-cell text-left"><?= htmlspecialchars($row['ho_ten_gv'] ?: 'Không có') ?></td>
                 </tr>
                 <?php
             }
