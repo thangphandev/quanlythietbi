@@ -218,9 +218,9 @@
                     const d = parseInt(row.so_buoi_day);
                     
                     if (m === 0 && d > 0) {
-                        badge = `<span class="badge-status badge-delete" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.25);">🚨 NGUY CƠ CAO: Khống thiết bị (${d} buổi TH - 0 mượn)</span>`;
+                        badge = `<span class="badge-status badge-delete" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.25);">🚨 Cảnh báo: Chưa mượn thiết bị (${d} buổi TH - 0 mượn)</span>`;
                     } else if (m < d / 2 && d > 0) {
-                        badge = `<span class="badge-status badge-borrowing" style="background: rgba(245, 158, 11, 0.1); color: #d97706; border-color: rgba(245, 158, 11, 0.25);">⚠️ Cảnh báo: Tần suất mượn thấp (${m}/${d} buổi)</span>`;
+                        badge = `<span class="badge-status badge-borrowing" style="background: rgba(245, 158, 11, 0.1); color: #d97706; border-color: rgba(245, 158, 11, 0.25);">⚠️ Khá: Tần suất thấp (${m}/${d} buổi)</span>`;
                     } else {
                         badge = `<span class="badge-status badge-returned" style="background: rgba(16, 185, 129, 0.1); color: #10b981; border-color: rgba(16, 185, 129, 0.25);">🟢 Tốt (Hoàn thành đầy đủ)</span>`;
                     }
