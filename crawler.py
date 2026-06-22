@@ -63,10 +63,13 @@ def _login(session: requests.Session) -> bool:
 
         m = re.search(r'action="([^"]+login-actions/authenticate[^"]+)"', res.text)
         if not m:
+            m = re.search(r'"loginAction"\s*:\s*"([^"]+)"', res.text)
+            
+        if not m:
             print("[-] Không tìm thấy URL đăng nhập SSO trong trang phản hồi.")
             return False
 
-        action_url = html.unescape(m.group(1))
+        action_url = html.unescape(m.group(1)).replace('\\/', '/')
         resp = session.post(action_url, data={
             "credentialId": "",
             "username": USERNAME,

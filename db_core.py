@@ -86,9 +86,19 @@ def init_database():
         conn.autocommit = True
         cursor = conn.cursor()
         
-        # Đọc schema.sql
-        schema_file = "schema.sql"
-        if os.path.exists(schema_file):
+        # Đọc schema.sql hoặc init-db.sql từ các đường dẫn khả dụng
+        schema_file = None
+        possible_paths = [
+            "schema.sql",
+            "device_manager/init-db.sql",
+            "/app_crawler/device_manager/init-db.sql"
+        ]
+        for path in possible_paths:
+            if os.path.exists(path):
+                schema_file = path
+                break
+
+        if schema_file:
             print(f"[*] Đang thực thi cấu trúc từ file '{schema_file}'...")
             with open(schema_file, "r", encoding="utf-8") as f:
                 schema_sql = f.read()
@@ -110,7 +120,7 @@ def init_database():
             
             print("[+] Khởi tạo cấu trúc và nâng cấp các bảng thành công!")
         else:
-            print(f"[-] Không tìm thấy file '{schema_file}' để khởi tạo cấu trúc.")
+            print("[-] Không tìm thấy tệp 'schema.sql' hoặc 'init-db.sql' nào để khởi tạo cấu trúc.")
             
         cursor.close()
         conn.close()
