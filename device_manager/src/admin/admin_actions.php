@@ -109,6 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
         $chat_luong = trim($_POST['chat_luong'] ?: 'Tốt');
         $gv_quan_ly = intval($_POST['id_giang_vien_quan_ly']) ?: null;
         $id_loai = intval($_POST['id_loai']) ?: null;
+        $tai_lieu_link = trim($_POST['tai_lieu_link'] ?? '');
         
         // Xử lý upload ảnh
         $hinh_anh = null;
@@ -127,11 +128,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
         } else {
             try {
                 $stmt = $db->prepare("
-                    INSERT INTO thiet_bi (ma_thiet_bi, ten_thiet_bi, vi_tri, nam_su_dung, chat_luong, id_giang_vien_quan_ly, hinh_anh, id_loai)
-                    VALUES (:ma, :ten, :vi_tri, :nam, :chat_luong, :gv, :hinh_anh, :id_loai)
+                    INSERT INTO thiet_bi (ma_thiet_bi, ten_thiet_bi, vi_tri, nam_su_dung, chat_luong, id_giang_vien_quan_ly, hinh_anh, id_loai, tai_lieu_link)
+                    VALUES (:ma, :ten, :vi_tri, :nam, :chat_luong, :gv, :hinh_anh, :id_loai, :tai_lieu_link)
                 ");
                 $stmt->execute([
-                    'ma' => $ma, 'ten' => $ten, 'vi_tri' => $vi_tri, 'nam' => $nam, 'chat_luong' => $chat_luong, 'gv' => $gv_quan_ly, 'hinh_anh' => $hinh_anh, 'id_loai' => $id_loai
+                    'ma' => $ma, 'ten' => $ten, 'vi_tri' => $vi_tri, 'nam' => $nam, 'chat_luong' => $chat_luong, 'gv' => $gv_quan_ly, 'hinh_anh' => $hinh_anh, 'id_loai' => $id_loai, 'tai_lieu_link' => $tai_lieu_link
                 ]);
                 $msg = "🎉 Đã thêm thiết bị mới thành công!";
             } catch (PDOException $e) {
@@ -150,6 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
         $chat_luong = trim($_POST['chat_luong']);
         $gv_quan_ly = intval($_POST['id_giang_vien_quan_ly']) ?: null;
         $id_loai = intval($_POST['id_loai']) ?: null;
+        $tai_lieu_link = trim($_POST['tai_lieu_link'] ?? '');
         
         if (empty($ma) || empty($ten)) {
             $error = "Mã thiết bị và Tên thiết bị không được để trống!";
@@ -158,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
                 // Xử lý upload ảnh mới
                 $image_sql = "";
                 $params = [
-                    'ma' => $ma, 'ten' => $ten, 'vi_tri' => $vi_tri, 'nam' => $nam, 'chat_luong' => $chat_luong, 'gv' => $gv_quan_ly, 'id_loai' => $id_loai, 'id' => $id
+                    'ma' => $ma, 'ten' => $ten, 'vi_tri' => $vi_tri, 'nam' => $nam, 'chat_luong' => $chat_luong, 'gv' => $gv_quan_ly, 'id_loai' => $id_loai, 'tai_lieu_link' => $tai_lieu_link, 'id' => $id
                 ];
                 
                 if (isset($_FILES['hinh_anh']) && $_FILES['hinh_anh']['error'] === UPLOAD_ERR_OK) {
@@ -174,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
                 
                 $stmt = $db->prepare("
                     UPDATE thiet_bi 
-                    SET ma_thiet_bi = :ma, ten_thiet_bi = :ten, vi_tri = :vi_tri, nam_su_dung = :nam, chat_luong = :chat_luong, id_giang_vien_quan_ly = :gv, id_loai = :id_loai $image_sql 
+                    SET ma_thiet_bi = :ma, ten_thiet_bi = :ten, vi_tri = :vi_tri, nam_su_dung = :nam, chat_luong = :chat_luong, id_giang_vien_quan_ly = :gv, id_loai = :id_loai, tai_lieu_link = :tai_lieu_link $image_sql 
                     WHERE id = :id
                 ");
                 $stmt->execute($params);

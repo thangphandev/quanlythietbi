@@ -135,6 +135,7 @@ try {
     // Bỏ qua cột số lượng thiết bị, điều chỉnh CSDL tự động
     $db->query("ALTER TABLE thiet_bi DROP COLUMN IF EXISTS so_luong_tong");
     $db->query("ALTER TABLE thiet_bi DROP COLUMN IF EXISTS so_luong_kha_dung");
+    $db->query("ALTER TABLE thiet_bi ADD COLUMN IF NOT EXISTS tai_lieu_link TEXT DEFAULT ''");
 } catch (PDOException $e) {
     // Bỏ qua nếu cột đã tồn tại hoặc có lỗi nhỏ
 }

@@ -68,6 +68,12 @@
                 </select>
             </div>
 
+            <!-- Link Google Drive thư mục tài liệu -->
+            <div style="margin-bottom: 14px;">
+                <label for="edit_tai_lieu_link" style="display:block; font-weight:600; font-size:0.88rem; margin-bottom:6px; color:var(--text-primary);">Đường dẫn thư mục tài liệu (Google Drive):</label>
+                <input type="url" id="edit_tai_lieu_link" name="tai_lieu_link" placeholder="https://drive.google.com/drive/folders/..." style="width:100%; height:40px; padding:8px 12px; border-radius:10px; border:1px solid #cbd5e1; box-sizing:border-box; color:var(--text-primary); background:#fff; font-size:0.9rem;">
+            </div>
+
             <!-- Tình trạng chất lượng -->
             <div style="margin-bottom: 14px;">
                 <label for="edit_chat_luong" style="display:block; font-weight:600; font-size:0.88rem; margin-bottom:6px; color:var(--text-primary);">Tình trạng chất lượng:</label>

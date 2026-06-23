@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS thiet_bi (
     chat_luong VARCHAR(255) DEFAULT 'Tốt',         -- Trạng thái/chất lượng (Ví dụ: Tốt, Hư hỏng: Lỗi màn hình)
     id_giang_vien_quan_ly INT REFERENCES giang_vien(id_giang_vien) ON DELETE SET NULL, -- Giảng viên phụ trách
     id_loai INT REFERENCES loai(id_loai) ON DELETE SET NULL, -- Phân loại thiết bị
+    tai_lieu_link TEXT DEFAULT '',                 -- Đường dẫn thư mục tài liệu Google Drive
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );

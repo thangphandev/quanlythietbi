@@ -474,7 +474,7 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
     <!-- Footer Section -->
     <footer style="padding: 15px 10px; font-size: 0.8rem; line-height: 1.4; color: var(--text-muted); text-align: center;">
         <p style="margin: 2px 0;"><strong>Hỗ trợ kỹ thuật:</strong> Phan Minh Thắng · SĐT: 0834 029 049 · Email: <a href="mailto:thangpm@vlute.edu.vn" style="color: var(--accent-blue);">thangpm@vlute.edu.vn</a></p>
-        <p style="margin: 2px 0;">Hệ thống Quản lý Thiết bị v3.0.0 (Light Academic Platform)</p>
+        <p style="margin: 2px 0;">Hệ thống Quản lý Thiết bị v3.0.0</p>
         <p style="margin: 6px 0 0 0;"><a href="admin.php" style="font-weight: 600; text-decoration: none; color: var(--accent-blue);">⚙ VÀO TRANG QUẢN TRỊ (ADMIN PANEL)</a></p>
     </footer>
 
@@ -516,6 +516,14 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
                 <div class="info-item" style="padding:8px 12px; grid-column: span 2;">
                     <span>Tình trạng chất lượng hiện tại</span>
                     <strong id="m_chat_luong" style="font-size: 0.98rem; font-weight: 650; color: var(--success-green);">Tốt</strong>
+                </div>
+                
+                <!-- Thư mục tài liệu (Google Drive) -->
+                <div class="info-item" id="m_tai_lieu_container" style="padding:8px 12px; grid-column: span 2; display:none;">
+                    <span>Thư mục giáo trình / tài liệu liên quan</span>
+                    <a id="m_tai_lieu_link" href="" target="_blank" style="font-weight:600; color:#db2777; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                        📁 Mở thư mục Google Drive tài liệu
+                    </a>
                 </div>
             </div>
 
@@ -954,6 +962,19 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
                         mImg.src = "";
                         mImg.dataset.zoom = "";
                         mImg.style.display = "none";
+                    }
+                    
+                    // Nạp đường dẫn tài liệu Google Drive
+                    const docContainer = document.getElementById("m_tai_lieu_container");
+                    const docLink = document.getElementById("m_tai_lieu_link");
+                    if (docContainer && docLink) {
+                        if (data.tai_lieu_link && data.tai_lieu_link.trim() !== '') {
+                            docLink.href = data.tai_lieu_link.trim();
+                            docContainer.style.display = "block";
+                        } else {
+                            docLink.href = "#";
+                            docContainer.style.display = "none";
+                        }
                     }
                     
                     // Nạp danh sách lịch sử sử dụng trước đó

@@ -887,6 +887,7 @@
         document.getElementById("edit_id_giang_vien_quan_ly").value = device.id_giang_vien_quan_ly || '';
         document.getElementById("edit_id_loai").value = device.id_loai || '';
         document.getElementById("edit_chat_luong").value = device.chat_luong || 'Tốt';
+        document.getElementById("edit_tai_lieu_link").value = device.tai_lieu_link || '';
         
         // Preview ảnh hiện tại
         const previewContainer = document.getElementById("edit_image_preview_container");
