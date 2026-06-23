@@ -462,11 +462,74 @@
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     
-    // Độ phân giải cao cho bản in đẹp: 400x480
-    canvas.width = 400;
-    canvas.height = 480;
+    // Thiết lập font chữ ban đầu để đo đạc chính xác
+    const fontTitle = 'bold 18px Inter, Arial, sans-serif';
+    const fontLabel = 'bold 15px Inter, Arial, sans-serif';
+    const fontValue = '500 15px Inter, Arial, sans-serif';
+    const fontCode = 'bold 15px Inter, Arial, sans-serif';
     
-    // 1. Vẽ nền trắng
+    // Đo chiều cao của phần văn bản tự động xuống dòng
+    function measureWrappedTextHeight(context, text, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let linesCount = 1;
+        
+        for (let n = 0; n < words.length; n++) {
+            let testLine = line + words[n] + ' ';
+            let metrics = context.measureText(testLine);
+            let testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+                line = words[n] + ' ';
+                linesCount++;
+            } else {
+                let wordMetrics = context.measureText(words[n]);
+                if (wordMetrics.width > maxWidth) {
+                    if (line.trim() !== '') {
+                        linesCount++;
+                        line = '';
+                    }
+                    let word = words[n];
+                    let charLine = '';
+                    for (let c = 0; c < word.length; c++) {
+                        let testCharLine = charLine + word[c];
+                        let testCharWidth = context.measureText(testCharLine).width;
+                        if (testCharWidth > maxWidth) {
+                            linesCount++;
+                            charLine = word[c];
+                        } else {
+                            charLine = testCharLine;
+                        }
+                    }
+                    line = charLine + ' ';
+                } else {
+                    line = testLine;
+                }
+            }
+        }
+        return linesCount * lineHeight;
+    }
+
+    ctx.font = fontValue;
+    const nameHeight = measureWrappedTextHeight(ctx, name, 255, 20);
+    
+    const nameY = 105;
+    const codeY = nameY + nameHeight - 20 + 24;
+    
+    ctx.font = fontCode;
+    const codeHeight = measureWrappedTextHeight(ctx, code, 255, 20);
+    
+    const codeEndY = codeY + codeHeight - 20;
+    const managerY = codeEndY + 24;
+    
+    const qrSize = 240;
+    const qrY = managerY + 20;
+    const padding = 15;
+    
+    // 1. Độ phân giải cao cho bản in đẹp: 400x[Dynamic Height]
+    canvas.width = 400;
+    canvas.height = Math.max(480, qrY + qrSize + padding + 10);
+    
+    // Khôi phục lại context sau khi thay đổi kích thước canvas
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
@@ -475,7 +538,6 @@
     ctx.lineWidth = 2;
     ctx.setLineDash([8, 6]); // Tạo nét đứt
     
-    const padding = 15;
     const radius = 15;
     const x = padding;
     const y = padding;
@@ -500,7 +562,7 @@
     
     // 3. Vẽ Tiêu đề chính
     ctx.fillStyle = '#000000';
-    ctx.font = 'bold 18px Inter, Arial, sans-serif';
+    ctx.font = fontTitle;
     ctx.textAlign = 'center';
     ctx.fillText('VLUTE - BỘ MÔN Ô TÔ ĐIỆN', canvas.width / 2, 52);
     
@@ -514,7 +576,7 @@
     // 4. Vẽ các trường thông tin bên trái
     ctx.textAlign = 'left';
     
-    // Hàm phụ tự động xuống dòng khi tên thiết bị quá dài
+    // Hàm phụ tự động xuống dòng khi văn bản quá dài
     function wrapText(context, text, x, y, maxWidth, lineHeight) {
         const words = text.split(' ');
         let line = '';
@@ -525,46 +587,64 @@
             let metrics = context.measureText(testLine);
             let testWidth = metrics.width;
             if (testWidth > maxWidth && n > 0) {
-                context.fillText(line, x, currentY);
+                context.fillText(line.trim(), x, currentY);
                 line = words[n] + ' ';
                 currentY += lineHeight;
             } else {
-                line = testLine;
+                let wordMetrics = context.measureText(words[n]);
+                if (wordMetrics.width > maxWidth) {
+                    if (line.trim() !== '') {
+                        context.fillText(line.trim(), x, currentY);
+                        currentY += lineHeight;
+                        line = '';
+                    }
+                    let word = words[n];
+                    let charLine = '';
+                    for (let c = 0; c < word.length; c++) {
+                        let testCharLine = charLine + word[c];
+                        let testCharWidth = context.measureText(testCharLine).width;
+                        if (testCharWidth > maxWidth) {
+                            context.fillText(charLine, x, currentY);
+                            charLine = word[c];
+                            currentY += lineHeight;
+                        } else {
+                            charLine = testCharLine;
+                        }
+                    }
+                    line = charLine + ' ';
+                } else {
+                    line = testLine;
+                }
             }
         }
-        context.fillText(line, x, currentY);
+        context.fillText(line.trim(), x, currentY);
         return currentY;
     }
     
     // Thiết bị: [Tên thiết bị]
     ctx.fillStyle = '#000000';
-    ctx.font = 'bold 15px Inter, Arial, sans-serif';
-    ctx.fillText('Thiết bị:', 40, 105);
-    ctx.font = '500 15px Inter, Arial, sans-serif';
-    const nameY = wrapText(ctx, name, 105, 105, 255, 20);
+    ctx.font = fontLabel;
+    ctx.fillText('Thiết bị:', 40, nameY);
+    ctx.font = fontValue;
+    wrapText(ctx, name, 105, nameY, 255, 20);
     
     // Mã số: [Mã thiết bị]
-    const codeY = nameY + 24;
     ctx.fillStyle = '#000000';
-    ctx.font = 'bold 15px Inter, Arial, sans-serif';
+    ctx.font = fontLabel;
     ctx.fillText('Mã số:', 40, codeY);
-    ctx.font = 'bold 15px Inter, Arial, sans-serif';
-    ctx.fillText(code, 105, codeY);
+    ctx.font = fontCode;
+    wrapText(ctx, code, 105, codeY, 255, 20);
     
     // Người quản lý: [Tên giảng viên]
-    const managerY = codeY + 24;
     ctx.fillStyle = '#000000';
-    ctx.font = 'bold 15px Inter, Arial, sans-serif';
+    ctx.font = fontLabel;
     ctx.fillText('Người quản lý:', 40, managerY);
-    ctx.font = '500 15px Inter, Arial, sans-serif';
+    ctx.font = fontValue;
     ctx.fillText(manager || 'Chưa phân công', 150, managerY);
     
     // 5. Tạo mã QR Code tạm để lấy ảnh chèn vào Canvas
     const tempContainer = document.createElement('div');
     const scanUrl = window.location.origin + window.location.pathname.replace('admin.php', 'index.php') + '?scan=' + encodeURIComponent(id);
-    
-    // --- THAY ĐỔI 1: Tăng kích thước QR lúc khởi tạo (Ví dụ: từ 180 lên 220) ---
-    const qrSize = 240; 
     
     new QRCode(tempContainer, {
         text: scanUrl,
@@ -673,6 +753,8 @@
                     .info-line {
                         margin-bottom: 6px;
                         font-size: 1rem;
+                        word-break: break-all;
+                        overflow-wrap: break-word;
                     }
                     .qr-container {
                         text-align: center;
@@ -683,7 +765,7 @@
                 <div class="label-box">
                     <h2>VLUTE - BỘ MÔN Ô TÔ ĐIỆN</h2>
                     <div class="info-line"><strong>Thiết bị:</strong> ${name}</div>
-                    <div class="info-line"><strong>Mã số:</strong> <code style="font-family: monospace; font-weight: bold; background: #eaeaea; padding: 2px 5px; border-radius: 3px;">${ma}</code></div>
+                    <div class="info-line"><strong>Mã số:</strong> <code style="font-family: monospace; font-weight: bold; background: #eaeaea; padding: 2px 5px; border-radius: 3px; word-break: break-all; overflow-wrap: break-word; white-space: normal;">${ma}</code></div>
                     <div class="info-line"><strong>Người quản lý:</strong> ${manager}</div>
                     <div class="qr-container">
                         ${imgHtml}
