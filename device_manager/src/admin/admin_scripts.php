@@ -70,7 +70,12 @@
 
             const visible = matchName && matchManager && matchCategory && matchYear && matchQuality;
             row.style.display = visible ? '' : 'none';
-            if (visible) visibleCount++;
+            if (visible) {
+                visibleCount++;
+            } else {
+                const cb = row.querySelector('.device-checkbox');
+                if (cb) cb.checked = false;
+            }
         });
 
         const countEl = document.getElementById('deviceFilterCount');
@@ -789,7 +794,16 @@
     function toggleSelectAllDevices(masterCheckbox) {
         const checkboxes = document.querySelectorAll('.device-checkbox');
         checkboxes.forEach(cb => {
-            cb.checked = masterCheckbox.checked;
+            const row = cb.closest('.device-row');
+            if (row) {
+                if (row.style.display !== 'none') {
+                    cb.checked = masterCheckbox.checked;
+                } else {
+                    cb.checked = false;
+                }
+            } else {
+                cb.checked = masterCheckbox.checked;
+            }
         });
         
         const groupCheckboxes = document.querySelectorAll('.group-checkbox');
@@ -803,21 +817,42 @@
     function toggleSelectGroup(groupId, groupCheckbox) {
         const checkboxes = document.querySelectorAll('.sub-device-checkbox-' + groupId);
         checkboxes.forEach(cb => {
-            cb.checked = groupCheckbox.checked;
+            const row = cb.closest('.device-row');
+            if (row) {
+                if (row.style.display !== 'none') {
+                    cb.checked = groupCheckbox.checked;
+                } else {
+                    cb.checked = false;
+                }
+            } else {
+                cb.checked = groupCheckbox.checked;
+            }
         });
         
         updateBulkActionsState();
     }
 
     function updateBulkActionsState() {
-        const checkedCount = document.querySelectorAll('.device-checkbox:checked').length;
+        const visibleCheckboxes = Array.from(document.querySelectorAll('.device-row'))
+            .filter(row => row.style.display !== 'none')
+            .map(row => row.querySelector('.device-checkbox'))
+            .filter(Boolean);
+        const checkedVisibleCount = visibleCheckboxes.filter(cb => cb.checked).length;
+        
+        const totalCheckedCount = document.querySelectorAll('.device-checkbox:checked').length;
+        
+        const masterCheckbox = document.getElementById('selectAllDevices');
+        if (masterCheckbox) {
+            masterCheckbox.checked = visibleCheckboxes.length > 0 && checkedVisibleCount === visibleCheckboxes.length;
+        }
+
         const bulkBar = document.getElementById('bulkActionsBar');
         const selectedCountEl = document.getElementById('selectedCount');
         
         if (bulkBar && selectedCountEl) {
-            if (checkedCount > 0) {
+            if (totalCheckedCount > 0) {
                 bulkBar.style.display = 'flex';
-                selectedCountEl.innerText = checkedCount;
+                selectedCountEl.innerText = totalCheckedCount;
             } else {
                 bulkBar.style.display = 'none';
             }
