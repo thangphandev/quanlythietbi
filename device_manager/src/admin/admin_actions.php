@@ -155,6 +155,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
         
         if (empty($ma) || empty($ten)) {
             $error = "Mã thiết bị và Tên thiết bị không được để trống!";
+            if (isset($_POST['ajax'])) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => $error]);
+                exit;
+            }
         } else {
             try {
                 // Xử lý upload ảnh mới
@@ -180,9 +185,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
                     WHERE id = :id
                 ");
                 $stmt->execute($params);
+                
+                if (isset($_POST['ajax'])) {
+                    // Truy vấn lại thông tin thiết bị đã cập nhật kèm thông tin liên kết loại và giảng viên
+                    $query = "
+                        SELECT t.*, l.ten_loai, l.ma_mau, gv.ho_ten_gv as ten_gv_quan_ly
+                        FROM thiet_bi t
+                        LEFT JOIN loai l ON t.id_loai = l.id_loai
+                        LEFT JOIN giang_vien gv ON t.id_giang_vien_quan_ly = gv.id_giang_vien
+                        WHERE t.id = :id
+                    ";
+                    $qStmt = $db->prepare($query);
+                    $qStmt->execute(['id' => $id]);
+                    $updated = $qStmt->fetch(PDO::FETCH_ASSOC);
+
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => true,
+                        'message' => 'Cập nhật thiết bị thành công!',
+                        'data' => $updated
+                    ]);
+                    exit;
+                }
             
             } catch (PDOException $e) {
                 $error = "Lỗi khi cập nhật thiết bị: " . $e->getMessage();
+                if (isset($_POST['ajax'])) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => $error]);
+                    exit;
+                }
             }
         }
     }

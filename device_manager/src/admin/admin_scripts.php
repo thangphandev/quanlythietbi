@@ -1244,4 +1244,171 @@
             }
         }
     }
+
+    // ==============================================================================
+    // XỬ LÝ AJAX LƯU THAY ĐỔI THIẾT BỊ KHÔNG TẢI LẠI TRANG
+    // ==============================================================================
+    document.addEventListener("DOMContentLoaded", function() {
+        const editForm = document.getElementById("editDeviceForm");
+        if (editForm) {
+            editForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                
+                showNotification("⏳ Đang cập nhật thông tin...", "⚙️");
+                
+                const formData = new FormData(editForm);
+                formData.append("ajax", "1");
+                
+                fetch("admin.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("HTTP error " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.success) {
+                        showNotification("🎉 " + result.message, "✔️");
+                        closeEditModal();
+                        updateDeviceRow(result.data);
+                    } else {
+                        showNotification("⚠️ " + result.message, "❌");
+                    }
+                })
+                .catch(error => {
+                    console.error("AJAX Edit Error:", error);
+                    showNotification("⚠️ Có lỗi xảy ra trong quá trình cập nhật dưới nền!", "❌");
+                });
+            });
+        }
+    });
+
+    function updateDeviceRow(device) {
+        const row = document.getElementById('device-row-' + device.id);
+        if (!row) return;
+        
+        // 1. Cập nhật các data-attributes để phục vụ live search client-side
+        row.dataset.name = (device.ten_thiet_bi || '').toLowerCase().trim();
+        row.dataset.manager = (device.ten_gv_quan_ly || '').toLowerCase().trim();
+        row.dataset.category = (device.ten_loai || '').toLowerCase().trim();
+        row.dataset.year = (device.nam_su_dung || '').toString().trim();
+        row.dataset.quality = (device.chat_luong || '').toLowerCase().trim();
+        
+        // 2. Cập nhật data-attributes của checkbox hàng loạt
+        const checkbox = row.querySelector('.device-checkbox');
+        if (checkbox) {
+            checkbox.dataset.code = device.ma_thiet_bi;
+            checkbox.dataset.name = device.ten_thiet_bi;
+            checkbox.dataset.manager = device.ten_gv_quan_ly || 'Chưa phân công';
+        }
+        
+        // 3. Cập nhật các ô td tương ứng
+        const cells = row.cells;
+        if (!cells || cells.length < 9) return;
+        
+        // Ô 1 (index 1): Ảnh + Tên thiết bị
+        const nameContainer = cells[1].querySelector('div');
+        if (nameContainer) {
+            const nameSpan = nameContainer.querySelector('span');
+            if (nameSpan) {
+                nameSpan.textContent = device.ten_thiet_bi;
+            }
+            
+            // Xử lý ảnh đại diện / thumbnail
+            if (device.hinh_anh) {
+                const existingImg = nameContainer.querySelector('img');
+                const newThumb = 'uploads/thumb_' + device.hinh_anh;
+                const newZoom = 'uploads/' + device.hinh_anh;
+                if (existingImg) {
+                    existingImg.src = newThumb;
+                    existingImg.setAttribute('data-zoom', newZoom);
+                } else {
+                    const placeholder = nameContainer.querySelector('.thietbi-hinh');
+                    if (placeholder) {
+                        const newImg = document.createElement('img');
+                        newImg.src = newThumb;
+                        newImg.setAttribute('data-zoom', newZoom);
+                        newImg.className = 'thietbi-hinh zoomable-thumb';
+                        newImg.alt = 'Device';
+                        newImg.style.width = '70px';
+                        newImg.style.height = '70px';
+                        newImg.style.objectFit = 'cover';
+                        newImg.style.borderRadius = '8px';
+                        newImg.style.cursor = 'zoom-in';
+                        placeholder.replaceWith(newImg);
+                    }
+                }
+            }
+        }
+        
+        // Ô 2 (index 2): ID / Mã thiết bị
+        const codeElement = cells[2].querySelector('code');
+        if (codeElement) {
+            codeElement.textContent = device.ma_thiet_bi;
+        }
+        
+        // Ô 3 (index 3): Phân loại
+        const catContainer = cells[3];
+        if (catContainer) {
+            if (device.ten_loai) {
+                const color = device.ma_mau || '#0284c7';
+                catContainer.innerHTML = `
+                    <span style="font-size:0.8rem; font-weight:600; padding:4px 10px; border-radius:8px; display:inline-block;
+                                 background: color-mix(in srgb, ${color} 10%, rgba(255,255,255,0.75)); 
+                                 color: color-mix(in srgb, ${color} 85%, #000); 
+                                 border: 1px solid color-mix(in srgb, ${color} 25%, transparent);">
+                        ${device.ten_loai}
+                    </span>
+                `;
+            } else {
+                catContainer.innerHTML = `
+                    <span style="font-size:0.8rem; font-weight:500; padding:4px 10px; border-radius:8px; display:inline-block; background:#f1f5f9; color:var(--text-muted); border:1px solid #e2e8f0;">
+                        Chưa phân loại
+                    </span>
+                `;
+            }
+        }
+        
+        // Ô 4 (index 4): Nơi sử dụng (Vị trí)
+        cells[4].textContent = device.vi_tri || '';
+        
+        // Ô 5 (index 5): Năm sử dụng
+        cells[5].textContent = device.nam_su_dung || '';
+        
+        // Ô 6 (index 6): Chất lượng
+        const qualitySpan = cells[6].querySelector('span');
+        if (qualitySpan) {
+            qualitySpan.textContent = device.chat_luong;
+            const isGood = (device.chat_luong || '').toLowerCase().startsWith('tốt');
+            qualitySpan.className = isGood ? 'status-good' : 'status-bad';
+        }
+        
+        // Ô 7 (index 7): GV Quản lý
+        cells[7].textContent = device.ten_gv_quan_ly || 'Chưa phân công';
+        
+        // Ô 8 (index 8): Hành động (Cập nhật QR và nút Edit)
+        const actionContainer = cells[8].querySelector('div');
+        if (actionContainer) {
+            // Cập nhật tham số của nút QR
+            const qrBtn = actionContainer.querySelector('button[onclick^="openQRModal"]');
+            if (qrBtn) {
+                const escapedCode = (device.ma_thiet_bi || '').replace(/'/g, "\\'");
+                const escapedName = (device.ten_thiet_bi || '').replace(/'/g, "\\'");
+                const escapedMgr = (device.ten_gv_quan_ly || 'Chưa phân công').replace(/'/g, "\\'");
+                qrBtn.setAttribute('onclick', `openQRModal(${device.id}, '${escapedCode}', '${escapedName}', '${escapedMgr}')`);
+            }
+            
+            // Cập nhật thuộc tính data-device của nút Sửa để đồng bộ dữ liệu lần sửa kế tiếp
+            const editBtn = actionContainer.querySelector('.btn-edit');
+            if (editBtn) {
+                editBtn.setAttribute('data-device', JSON.stringify(device));
+            }
+        }
+        
+        // 4. Kích hoạt bộ lọc tìm kiếm tức thì để cập nhật trạng thái hiển thị
+        filterDevicesTable();
+    }
 </script>

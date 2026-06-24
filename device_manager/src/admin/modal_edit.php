@@ -18,7 +18,7 @@
         <!-- Tiêu đề modal chuẩn hệ thống -->
         <h2 class="modal-title" style="margin-bottom: 15px; font-size: 1.3rem;">✏️ Chỉnh sửa thông tin thiết bị</h2>
         
-        <form method="POST" action="admin.php" enctype="multipart/form-data">
+        <form id="editDeviceForm" method="POST" action="admin.php" enctype="multipart/form-data">
             <input type="hidden" name="admin_action" value="edit_device">
             <input type="hidden" id="edit_id" name="id">
             

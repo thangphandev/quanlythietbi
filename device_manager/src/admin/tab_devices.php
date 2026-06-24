@@ -99,7 +99,7 @@
                     <?php
                         $cls = str_starts_with($d['chat_luong'], 'Tốt') ? 'status-good' : 'status-bad';
                     ?>
-                    <tr class="device-row"
+                    <tr class="device-row" id="device-row-<?= $d['id'] ?>"
                         data-name="<?= htmlspecialchars(strtolower($d['ten_thiet_bi'])) ?>"
                         data-manager="<?= htmlspecialchars(strtolower($d['ten_gv_quan_ly'] ?: '')) ?>"
                         data-category="<?= htmlspecialchars(strtolower($d['ten_loai'] ?: '')) ?>"
@@ -152,7 +152,7 @@
                             <div style="display: flex; gap: 4px; flex-wrap: wrap;">
                                 <button type="button" class="btn-table-action" style="background: rgba(13, 148, 136, 0.08); color: #0d9488; border: 1px solid rgba(13, 148, 136, 0.15); padding: 5px 9px; font-size: 0.8rem;" onclick="openQRModal(<?= $d['id'] ?>, '<?= htmlspecialchars($d['ma_thiet_bi']) ?>', '<?= htmlspecialchars($d['ten_thiet_bi']) ?>', '<?= htmlspecialchars($d['ten_gv_quan_ly'] ?: 'Chưa phân công') ?>')">📱 QR</button>
                                 <button type="button" class="btn-table-action" style="background: rgba(124, 58, 237, 0.08); color: #7c3aed; border: 1px solid rgba(124, 58, 237, 0.15); padding: 5px 9px; font-size: 0.8rem;" onclick="openDeviceHistoryModal(<?= $d['id'] ?>)">📄 Lịch sử</button>
-                                <button type="button" class="btn-table-action btn-edit" style="padding: 5px 9px; font-size: 0.8rem;" onclick="openEditModal(<?= htmlspecialchars(json_encode($d)) ?>)">✏️ Sửa</button>
+                                <button type="button" class="btn-table-action btn-edit" style="padding: 5px 9px; font-size: 0.8rem;" data-device='<?= htmlspecialchars(json_encode($d), ENT_QUOTES, 'UTF-8') ?>' onclick="openEditModal(JSON.parse(this.getAttribute('data-device')))">✏️ Sửa</button>
                                 <form method="POST" action="admin.php" style="display:inline;" onsubmit="return confirm('Bạn có thực sự muốn xóa thiết bị này không?');">
                                     <input type="hidden" name="admin_action" value="delete_device">
                                     <input type="hidden" name="id" value="<?= $d['id'] ?>">
