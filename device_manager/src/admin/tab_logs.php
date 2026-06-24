@@ -6,7 +6,12 @@
  */
 ?>
 <div class="tab-content <?= $active_tab === 'logs-tab' ? 'active' : '' ?>" id="logs-tab">
-    <h3 style="margin-top:0; margin-bottom:15px;">NHẬT KÝ SỬ DỤNG THIẾT BỊ CHI TIẾT</h3>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+        <h3 style="margin:0;">NHẬT KÝ SỬ DỤNG THIẾT BỊ CHI TIẾT</h3>
+        <button type="button" class="btn-console" onclick="openAddUsageModal()" style="margin:0; background: linear-gradient(135deg, var(--accent-blue), #0284c7); padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);">
+            ➕ THÊM LƯỢT SỬ DỤNG MỚI
+        </button>
+    </div>
     
     <!-- Bộ lọc Nhật ký sử dụng -->
     <div class="admin-card" style="margin-bottom: 25px; padding: 18px 22px; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-radius: 16px; border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
@@ -51,7 +56,6 @@
        
     </div>
     
-    <div class="table-responsive">
         <table>
             <thead>
                 <tr>
@@ -60,12 +64,13 @@
                     <th>Mã lớp / Mục đích</th>
                     <th>Thiết bị sử dụng</th>
                     <th>Đánh giá chất lượng bàn giao</th>
+                    <th style="width: 140px; text-align: center;">Hành động</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($history)): ?>
                     <tr>
-                        <td colspan="5" style="text-align:center; color:var(--text-muted);">Chưa có lịch sử giao dịch sử dụng thiết bị nào!</td>
+                        <td colspan="6" style="text-align:center; color:var(--text-muted);">Chưa có lịch sử giao dịch sử dụng thiết bị nào!</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($history as $h): ?>
@@ -78,6 +83,7 @@
                             <td style="font-weight:bold; color:var(--accent-blue);"><?= htmlspecialchars($h['ten_lop']) ?></td>
                             <td>
                                 <?php 
+                                $row_devices = [];
                                 try {
                                     $d_stmt = $db->prepare("
                                         SELECT ct.*, tb.ten_thiet_bi 
@@ -89,6 +95,7 @@
                                     $items = $d_stmt->fetchAll();
                                     foreach ($items as $item) {
                                         echo "• " . htmlspecialchars($item['ten_thiet_bi']) . "<br>";
+                                        $row_devices[] = intval($item['id_thiet_bi']);
                                     }
                                 } catch (PDOException $e) {
                                     echo "Lỗi truy xuất";
@@ -99,6 +106,25 @@
                                 <span style="font-size:0.88rem; font-style:italic;">
                                     <?= htmlspecialchars($h['tinh_trang_chung']) ?>
                                 </span>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;">
+                                    <button type="button" class="btn-table-action btn-edit" style="padding: 5px 9px; font-size: 0.8rem;" 
+                                            onclick="openEditUsageModal(<?= htmlspecialchars(json_encode([
+                                                'id' => intval($h['id']),
+                                                'ngay_muon' => date('Y-m-d\TH:i', strtotime($h['ngay_muon'])),
+                                                'id_giang_vien' => intval($h['id_giang_vien']),
+                                                'email_xac_nhan' => $h['email_xac_nhan'],
+                                                'ten_lop' => $h['ten_lop'],
+                                                'tinh_trang_chung' => $h['tinh_trang_chung'],
+                                                'thiet_bi' => $row_devices
+                                            ]), ENT_QUOTES, 'UTF-8') ?>)">✏️ Sửa</button>
+                                    <form method="POST" action="admin.php?tab=logs-tab" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa lượt sử dụng này không?');">
+                                        <input type="hidden" name="admin_action" value="delete_usage">
+                                        <input type="hidden" name="id" value="<?= $h['id'] ?>">
+                                        <button type="submit" class="btn-table-action btn-delete" style="padding: 5px 9px; font-size: 0.8rem;">❌ Xóa</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>

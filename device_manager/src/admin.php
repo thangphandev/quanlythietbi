@@ -280,7 +280,8 @@ $active_tab = isset($_GET['tab']) ? trim($_GET['tab']) : 'devices-tab';
     <?php include 'admin/modal_edit.php'; ?>
     <?php include 'admin/modal_add.php'; ?>
     <?php include 'admin/modal_add_category.php'; ?>
-    <?php include 'admin/modal_edit_category.php'; ?>
+    <?php include 'admin/modal_usage.php'; ?>
+    <?php include 'admin/modal_quick_usage.php'; ?>
 
     <!-- JS Logic Scripts -->
     <?php include 'admin/admin_scripts.php'; ?>

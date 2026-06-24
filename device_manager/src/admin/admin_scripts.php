@@ -254,6 +254,12 @@
             return;
         }
         
+        // Cập nhật ID thiết bị cho form thêm lượt sử dụng nhanh
+        const qIdInput = document.getElementById("quick_usage_device_id");
+        if (qIdInput) {
+            qIdInput.value = id;
+        }
+        
         const body = document.getElementById("statsLookupHistoryBody");
         body.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">⏳ Đang truy xuất lịch sử...</td></tr>`;
         document.getElementById("statsLookupResultContainer").style.display = "block";
@@ -278,7 +284,8 @@
                 
                 // Bind export excel button
                 document.getElementById("btnExportLookupHistory").onclick = () => {
-                    window.location.href = 'admin.php?action=export_device_history&id=' + id;
+                    const hkId = document.getElementById("exportLookupHistoryHK").value;
+                    window.location.href = 'admin.php?action=export_device_history&id=' + id + '&hk_filter=' + hkId;
                 };
 
                 const img = document.getElementById("lookupDeviceImg");
@@ -324,6 +331,7 @@
             (document.getElementById("qrModal") && document.getElementById("qrModal").classList.contains("active")) ||
             (document.getElementById("deviceHistoryModal") && document.getElementById("deviceHistoryModal").classList.contains("active")) ||
             (document.getElementById("editDeviceModal") && document.getElementById("editDeviceModal").classList.contains("active")) ||
+            (document.getElementById("quickUsageModal") && document.getElementById("quickUsageModal").classList.contains("active")) ||
             (document.getElementById("imageZoomOverlay") && document.getElementById("imageZoomOverlay").classList.contains("active"));
             
         if (isAnyActive) {
@@ -366,7 +374,8 @@
                 
                 // Bind export excel button
                 document.getElementById("btnExportDeviceHistory").onclick = () => {
-                    window.location.href = 'admin.php?action=export_device_history&id=' + id;
+                    const hkId = document.getElementById("exportDeviceHistoryHK").value;
+                    window.location.href = 'admin.php?action=export_device_history&id=' + id + '&hk_filter=' + hkId;
                 };
 
                 if (history.length === 0) {
@@ -945,10 +954,10 @@
             fetch(`admin.php?action=export_device_history&id=${id}`)
                 .then(res => {
                     if (!res.ok) throw new Error("Lỗi mạng");
-                    return res.text();
+                    return res.blob();
                 })
-                .then(htmlContent => {
-                    zip.file(`lich_su_thiet_bi_${code}.xls`, htmlContent);
+                .then(blob => {
+                    zip.file(`lich_su_thiet_bi_${code}.xlsx`, blob);
                     index++;
                     setTimeout(processNext, 100);
                 })
@@ -1163,6 +1172,7 @@
             closeQRModal();
             closeEditModal();
             closeAddModal();
+            closeUsageModal();
         }
     });
 
@@ -1207,6 +1217,18 @@
         const addCatModal = document.getElementById("addCategoryModal");
         if (addCatModal && addCatModal.classList.contains("active")) {
             closeAddCategoryModal(true);
+            return;
+        }
+
+        const usageModal = document.getElementById("usageModal");
+        if (usageModal && usageModal.classList.contains("active")) {
+            closeUsageModal(true);
+            return;
+        }
+
+        const quickUsageModal = document.getElementById("quickUsageModal");
+        if (quickUsageModal && quickUsageModal.classList.contains("active")) {
+            closeQuickUsageModal(true);
             return;
         }
 
@@ -1445,5 +1467,241 @@
         
         // 4. Kích hoạt bộ lọc tìm kiếm tức thì để cập nhật trạng thái hiển thị
         filterDevicesTable();
+    }
+
+    // ==============================================================================
+    // LOGIC ĐIỀU KHIỂN MODAL LƯỢT SỬ DỤNG THIẾT BỊ (ADD/EDIT USAGE)
+    // ==============================================================================
+    const usageModal = document.getElementById("usageModal");
+    const usageForm = document.getElementById("usageForm");
+    
+    function openAddUsageModal() {
+        if (!usageModal || !usageForm) return;
+        usageForm.reset();
+        document.getElementById("usage_id").value = "";
+        document.getElementById("usage_admin_action").value = "add_usage";
+        document.getElementById("usageModalTitle").textContent = "➕ Thêm lượt sử dụng thiết bị mới";
+        
+        // Mặc định thời gian hiện tại theo múi giờ địa phương (định dạng YYYY-MM-DDTHH:MM)
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById("usage_ngay_muon").value = now.toISOString().slice(0, 16);
+        
+        // Bỏ chọn tất cả các checkbox thiết bị
+        document.querySelectorAll(".usage-device-cb").forEach(cb => cb.checked = false);
+        
+        usageModal.classList.add("active");
+        updateBodyScrollLock();
+        history.pushState({ view: "add_usage" }, "");
+    }
+    
+    function openEditUsageModal(data) {
+        if (!usageModal || !usageForm) return;
+        usageForm.reset();
+        document.getElementById("usage_id").value = data.id;
+        document.getElementById("usage_admin_action").value = "edit_usage";
+        document.getElementById("usageModalTitle").textContent = "✏️ Chỉnh sửa lượt sử dụng";
+        
+        document.getElementById("usage_ngay_muon").value = data.ngay_muon;
+        document.getElementById("usage_id_giang_vien").value = data.id_giang_vien || "";
+        document.getElementById("usage_email_xac_nhan").value = data.email_xac_nhan || "";
+        document.getElementById("usage_ten_lop").value = data.ten_lop || "";
+        document.getElementById("usage_tinh_trang_chung").value = data.tinh_trang_chung || "";
+        
+        // Tích chọn các thiết bị đã dùng
+        const deviceIds = data.thiet_bi || [];
+        document.querySelectorAll(".usage-device-cb").forEach(cb => {
+            cb.checked = deviceIds.includes(parseInt(cb.value));
+        });
+        
+        usageModal.classList.add("active");
+        updateBodyScrollLock();
+        history.pushState({ view: "edit_usage" }, "");
+    }
+    
+    function closeUsageModal(isPopstate = false) {
+        if (usageModal && usageModal.classList.contains("active")) {
+            usageModal.classList.remove("active");
+            updateBodyScrollLock();
+            if (!isPopstate) {
+                isViewClosing = true;
+                history.back();
+            }
+        }
+    }
+    
+    function updateUsageEmail() {
+        const select = document.getElementById("usage_id_giang_vien");
+        const emailInput = document.getElementById("usage_email_xac_nhan");
+        if (select && emailInput) {
+            const selectedOption = select.options[select.selectedIndex];
+            if (selectedOption) {
+                emailInput.value = selectedOption.getAttribute("data-email") || "";
+            }
+        }
+    }
+
+    // Đảm bảo chọn ít nhất 1 thiết bị khi gửi form
+    if (usageForm) {
+        usageForm.addEventListener("submit", function(e) {
+            const checkedCount = document.querySelectorAll(".usage-device-cb:checked").length;
+            if (checkedCount === 0) {
+                e.preventDefault();
+                alert("Vui lòng tích chọn ít nhất 1 thiết bị sử dụng!");
+            }
+        });
+    }
+
+    // ==============================================================================
+    // LOGIC CHO FORM THÊM LƯỢT SỬ DỤNG NHANH DẠNG MODAL & LỊCH NGÀY
+    // ==============================================================================
+    const quickUsageModal = document.getElementById("quickUsageModal");
+    const quickUsageForm = document.getElementById("quickUsageForm");
+
+    function openQuickUsageModal() {
+        if (!quickUsageModal || !quickUsageForm) return;
+        
+        // Lấy ID thiết bị từ select box tra cứu
+        const lookupSelect = document.getElementById("statsLookupDeviceSelect");
+        if (!lookupSelect || !lookupSelect.value) {
+            alert("Vui lòng chọn thiết bị cần tra cứu trước!");
+            return;
+        }
+        
+        const deviceId = lookupSelect.value;
+        document.getElementById("quick_usage_device_id").value = deviceId;
+        
+        // Hiển thị tên thiết bị trên label modal
+        const deviceName = document.getElementById("lookupDeviceName").innerText;
+        const deviceCode = document.getElementById("lookupDeviceCode").innerText;
+        const label = document.getElementById("quickUsageDeviceNameLabel");
+        if (label) {
+            label.innerText = `${deviceName} [${deviceCode}]`;
+        }
+        
+        // Reset form
+        quickUsageForm.reset();
+        
+        // Mặc định chọn tháng hiện tại
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const monthSelect = document.getElementById("quick_month_select");
+        if (monthSelect) {
+            monthSelect.value = `${yyyy}-${mm}`;
+        }
+        
+        // Vẽ lưới ngày
+        generateQuickDaysGrid();
+        
+        quickUsageModal.classList.add("active");
+        updateBodyScrollLock();
+        history.pushState({ view: "quick_usage" }, "");
+    }
+
+    function closeQuickUsageModal(isPopstate = false) {
+        if (quickUsageModal && quickUsageModal.classList.contains("active")) {
+            quickUsageModal.classList.remove("active");
+            updateBodyScrollLock();
+            if (!isPopstate) {
+                isViewClosing = true;
+                history.back();
+            }
+        }
+    }
+
+    function updateQuickUsageEmail() {
+        const select = document.getElementById("quick_id_giang_vien");
+        const emailInput = document.getElementById("quick_email_xac_nhan");
+        if (select && emailInput) {
+            const selectedOption = select.options[select.selectedIndex];
+            if (selectedOption) {
+                emailInput.value = selectedOption.getAttribute("data-email") || "";
+            }
+        }
+    }
+
+    function generateQuickDaysGrid() {
+        const monthVal = document.getElementById("quick_month_select").value;
+        const grid = document.getElementById("quick_days_grid");
+        if (!monthVal || !grid) return;
+        
+        const [year, month] = monthVal.split('-').map(Number);
+        
+        // Số ngày trong tháng
+        const daysInMonth = new Date(year, month, 0).getDate();
+        
+        // Ngày trong tuần của ngày 1 (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+        const firstDayDate = new Date(year, month - 1, 1);
+        const firstDayOfWeek = firstDayDate.getDay();
+        
+        // Điều chỉnh Thứ 2 (0) -> Chủ Nhật (6)
+        const emptyCells = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
+        
+        let html = "";
+        
+        // Tên các thứ
+        const dayNames = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
+        dayNames.forEach(name => {
+            html += `<div style="text-align:center; font-weight:700; font-size:0.75rem; color:var(--text-secondary); padding-bottom:5px;">${name}</div>`;
+        });
+        
+        // Thêm các ô trống trước ngày mùng 1
+        for (let i = 0; i < emptyCells; i++) {
+            html += `<div></div>`;
+        }
+        
+        // Render danh sách ngày
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            const displayDay = String(d).padStart(2, '0');
+            
+            html += `
+                <label class="quick-day-box" id="q_day_box_${d}">
+                    <input type="checkbox" name="ngay_su_dung[]" value="${dateStr}" class="quick-day-checkbox" style="display:none;" onchange="toggleQuickDayStyle(this, ${d})">
+                    <span>${displayDay}</span>
+                </label>
+            `;
+        }
+        
+        grid.innerHTML = html;
+    }
+
+    function toggleQuickDayStyle(checkbox, day) {
+        const box = document.getElementById(`q_day_box_${day}`);
+        if (box) {
+            if (checkbox.checked) {
+                box.classList.add("selected");
+            } else {
+                box.classList.remove("selected");
+            }
+        }
+    }
+
+    function selectAllQuickDays(status) {
+        const checkboxes = document.querySelectorAll(".quick-day-checkbox");
+        checkboxes.forEach(cb => {
+            cb.checked = status;
+            // Kích hoạt thay đổi style
+            const label = cb.closest(".quick-day-box");
+            if (label) {
+                if (status) {
+                    label.classList.add("selected");
+                } else {
+                    label.classList.remove("selected");
+                }
+            }
+        });
+    }
+
+    // Đảm bảo chọn ít nhất 1 ngày khi gửi form sử dụng nhanh
+    if (quickUsageForm) {
+        quickUsageForm.addEventListener("submit", function(e) {
+            const checkedCount = document.querySelectorAll(".quick-day-checkbox:checked").length;
+            if (checkedCount === 0) {
+                e.preventDefault();
+                alert("Vui lòng tích chọn ít nhất 1 ngày sử dụng trên lịch tháng!");
+            }
+        });
     }
 </script>

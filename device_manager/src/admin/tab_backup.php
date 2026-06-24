@@ -10,7 +10,7 @@
     <div class="admin-card">
         <h3 style="border-bottom:1px solid rgba(0,0,0,0.06); padding-bottom:10px; margin-bottom:20px; color:var(--accent-blue);">📂 IMPORT / EXPORT DANH SÁCH THIẾT BỊ</h3>
         <p style="color:var(--text-secondary); font-size:0.92rem; line-height:1.5; margin-bottom:20px;">
-            Sao lưu và trao đổi danh sách thiết bị nhanh chóng bằng định dạng file Excel (.xls) có định dạng chuẩn hoặc CSV.
+            Sao lưu và trao đổi danh sách thiết bị nhanh chóng bằng định dạng file Excel (.xlsx) hoặc CSV.
         </p>
         
         <div class="flex-box">

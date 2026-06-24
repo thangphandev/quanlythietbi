@@ -408,7 +408,7 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
                             </div>
                             <div class="cl-actions" style="display:flex; flex-direction:column; gap:6px; flex-shrink:0;">
                                 <button type="button" class="btn-mdi btn-mdi-detail" onclick="event.stopPropagation(); openDeviceModalByCode('<?= htmlspecialchars($d['ma_thiet_bi']) ?>')" title="Xem chi tiết" style="font-size:1.15rem; font-weight:bold;">ⓘ</button>
-                                <button type="button" class="btn-mdi btn-mdi-add" onclick="event.stopPropagation(); addDeviceToCart(<?= $d['id'] ?>)" title="Mượn thiết bị">+</button>
+                                <button type="button" class="btn-mdi btn-mdi-add" onclick="event.stopPropagation(); addDeviceToCart(<?= $d['id'] ?>)" title="Sử dụng thiết bị">+</button>
                             </div>
                         </div>
                         <?php endforeach; ?>
@@ -544,7 +544,7 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
         </div>
         <div class="success-msg">
             <h2>Gửi xác nhận thành công!</h2>
-            <p id="successText">Phiếu mượn thiết bị đã được lưu trữ cục bộ thành công.</p>
+            <p id="successText">Phiếu sử dụng thiết bị đã được lưu trữ cục bộ thành công.</p>
             <button type="button" class="btn-success-close" id="btnSuccessClose">👌 ĐỒNG Ý</button>
         </div>
     </div>
@@ -1423,7 +1423,7 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
 
             const btnSubmit = document.getElementById("btnSubmit");
             btnSubmit.disabled = true;
-            btnSubmit.innerHTML = "⏳ ĐANG LƯU DỮ LIỆU PHIẾU MƯỢN...";
+            btnSubmit.innerHTML = "⏳ ĐANG LƯU DỮ LIỆU PHIẾU SỬ DỤNG...";
 
             fetch("index.php", {
                 method: "POST",

@@ -68,7 +68,7 @@
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
             <button type="button" class="btn-console" onclick="bulkDownloadQRCodes()" style="background: linear-gradient(135deg, #0d9488, #14b8a6); padding: 8px 16px; font-size: 0.85rem; height: auto; margin: 0; line-height: 1.2;">📥 Tải QR</button>
-            <button type="button" class="btn-console" onclick="bulkDownloadHistory()" style="background: linear-gradient(135deg, #3b82f6, #2563eb); padding: 8px 16px; font-size: 0.85rem; height: auto; margin: 0; line-height: 1.2;">📊 Tải lịch sử (.xls)</button>
+            <button type="button" class="btn-console" onclick="bulkDownloadHistory()" style="background: linear-gradient(135deg, #3b82f6, #2563eb); padding: 8px 16px; font-size: 0.85rem; height: auto; margin: 0; line-height: 1.2;">📊 Tải lịch sử (.xlsx)</button>
             <button type="button" class="btn-console" onclick="bulkDeleteDevices()" style="background: linear-gradient(135deg, #ef4444, #dc2626); padding: 8px 16px; font-size: 0.85rem; height: auto; margin: 0; line-height: 1.2;">❌ Xóa</button>
         </div>
     </div>

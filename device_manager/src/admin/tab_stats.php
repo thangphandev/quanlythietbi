@@ -150,8 +150,15 @@
                 <label for="statsLookupDeviceSelect" style="font-weight:600; color:var(--text-primary); margin-bottom:8px; display:block;">Chọn thiết bị cần tra cứu:</label>
                 <select id="statsLookupDeviceSelect" style="width:100%; height:46px; padding:10px 15px; border-radius:10px; border:1px solid #cbd5e1; font-size:0.95rem; font-weight:600;" onchange="loadLookupDeviceHistory(this.value)">
                     <option value="">-- Chọn một thiết bị trong hệ thống --</option>
-                    <?php foreach ($devices as $d): ?>
-                        <option value="<?= $d['id'] ?>"><?= htmlspecialchars($d['ten_thiet_bi']) ?> [<?= htmlspecialchars($d['ma_thiet_bi']) ?>]</option>
+                    <?php 
+                    $preselected_device_id = 0;
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_thiet_bi'])) {
+                        $preselected_device_id = intval($_POST['id_thiet_bi']);
+                    }
+                    foreach ($devices as $d): 
+                        $selected_attr = ($preselected_device_id === intval($d['id'])) ? 'selected' : '';
+                    ?>
+                        <option value="<?= $d['id'] ?>" <?= $selected_attr ?>><?= htmlspecialchars($d['ten_thiet_bi']) ?> [<?= htmlspecialchars($d['ma_thiet_bi']) ?>]</option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -191,29 +198,41 @@
                     </div>
                 </div>
 
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
-                    <h4 style="margin:0; color:var(--text-primary); font-weight:700;">📄 LỊCH SỬ BÀN GIAO & SỬ DỤNG CHI TIẾT</h4>
-                    <button type="button" class="btn-console" id="btnExportLookupHistory" style="margin:0; background:#10b981; border-color:#10b981; color:#fff; font-weight:600; padding:10px 20px; display:inline-flex; align-items:center; gap:6px;">
-                        📤 XUẤT LỊCH SỬ RA EXCEL (.XLS)
-                    </button>
-                </div>
-               
-
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width:180px;">Thời gian mượn</th>
-                                <th>Giáo viên sử dụng</th>
-                                <th>Mã lớp / Mục đích</th>
-                                <th style="width:200px;">Tình trạng khi trả</th>
-                                <th>Ghi chú lúc trả</th>
-                            </tr>
-                        </thead>
-                        <tbody id="statsLookupHistoryBody">
-                            <!-- Chèn bằng AJAX -->
-                        </tbody>
-                    </table>
+                <div style="margin-top: 20px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+                        <h4 style="margin:0; color:var(--text-primary); font-weight:700;">📄 LỊCH SỬ BÀN GIAO & SỬ DỤNG CHI TIẾT</h4>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <button type="button" class="btn-console" onclick="openQuickUsageModal()" style="margin:0; background:var(--accent-blue); border-color:var(--accent-blue); color:#fff; font-weight:600; padding:10px 20px; display:inline-flex; align-items:center; gap:6px;">
+                                ➕ THÊM NHANH LƯỢT SỬ DỤNG
+                            </button>
+                            <select id="exportLookupHistoryHK" style="height:42px; padding:0 12px; border-radius:10px; border:1px solid #cbd5e1; font-weight:600; background:#fff; font-size:0.88rem; box-sizing:border-box;">
+                                <option value="">Tất cả học kỳ</option>
+                                <?php foreach ($semesters as $hk): ?>
+                                    <option value="<?= $hk['id_hocky_namhoc'] ?>"><?= htmlspecialchars($hk['ten_hoc_ky']) ?> - <?= htmlspecialchars($hk['ten_nam_hoc']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button type="button" class="btn-console" id="btnExportLookupHistory" style="margin:0; background:#10b981; border-color:#10b981; color:#fff; font-weight:600; padding:10px 20px; display:inline-flex; align-items:center; gap:6px;">
+                                📤 XUẤT LỊCH SỬ RA EXCEL (.XLSX)
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:180px;">Thời gian mượn</th>
+                                    <th>Giáo viên sử dụng</th>
+                                    <th>Mã lớp / Mục đích</th>
+                                    <th style="width:200px;">Tình trạng khi trả</th>
+                                    <th>Ghi chú lúc trả</th>
+                                </tr>
+                            </thead>
+                            <tbody id="statsLookupHistoryBody">
+                                <!-- Chèn bằng AJAX -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -258,5 +277,21 @@
         if (select) {
             updateInactiveSemesterDates(select);
         }
+        
+        // Tự động chuyển tab và tra cứu lịch sử nếu có thiết bị được chọn trước (sau khi POST form)
+        <?php if (isset($preselected_device_id) && $preselected_device_id > 0): ?>
+        const btn = document.querySelector('.tab-btn[onclick*="stats-tab"]');
+        if (btn) {
+            switchTab('stats-tab', btn);
+        }
+        switchStatsSubTab('stats-lookup-section');
+        
+        const deviceId = <?= $preselected_device_id ?>;
+        const lookupSelect = document.getElementById("statsLookupDeviceSelect");
+        if (lookupSelect) {
+            lookupSelect.value = deviceId;
+            loadLookupDeviceHistory(deviceId);
+        }
+        <?php endif; ?>
     });
 </script>

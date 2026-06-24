@@ -18,7 +18,15 @@
                 <span>· Quản lý: <strong id="historyDeviceManager"></strong></span>
                 <span>· Tổng mượn: <strong id="historyDeviceUses" style="color: var(--success-green);"></strong></span>
             </div>
-            <button type="button" class="btn-console" id="btnExportDeviceHistory" style="padding: 6px 14px; font-size: 0.85rem; background: linear-gradient(135deg, #10b981, #059669); margin: 0; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);">📤 Xuất Excel (CSV)</button>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <select id="exportDeviceHistoryHK" style="height:32px; padding:0 8px; border-radius:8px; border:1px solid #cbd5e1; font-weight:600; background:#fff; font-size:0.82rem; box-sizing:border-box;">
+                    <option value="">Tất cả học kỳ</option>
+                    <?php foreach ($semesters as $hk): ?>
+                        <option value="<?= $hk['id_hocky_namhoc'] ?>"><?= htmlspecialchars($hk['ten_hoc_ky']) ?> - <?= htmlspecialchars($hk['ten_nam_hoc']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="button" class="btn-console" id="btnExportDeviceHistory" style="padding: 6px 14px; font-size: 0.85rem; background: linear-gradient(135deg, #10b981, #059669); margin: 0; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);">📤 Xuất Excel (.xlsx)</button>
+            </div>
         </div>
         
         <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">

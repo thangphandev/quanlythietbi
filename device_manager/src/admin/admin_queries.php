@@ -11,7 +11,7 @@
 // 1. Lấy danh sách giảng viên
 $lecturers = [];
 try {
-    $lecturers = $db->query("SELECT id_giang_vien, ho_ten_gv FROM giang_vien ORDER BY ho_ten_gv ASC")->fetchAll();
+    $lecturers = $db->query("SELECT id_giang_vien, ho_ten_gv, email FROM giang_vien ORDER BY ho_ten_gv ASC")->fetchAll();
 } catch (PDOException $e) {}
 
 // 2. Lấy danh sách thiết bị
@@ -36,6 +36,18 @@ try {
 $semesters = [];
 try {
     $semesters = $db->query("SELECT * FROM hoc_ky_nam_hoc ORDER BY ngay_bat_dau DESC")->fetchAll();
+} catch (PDOException $e) {}
+
+// 3b. Lấy danh sách tên học phần phục vụ gợi ý nhập liệu
+$suggest_courses = [];
+try {
+    $suggest_courses = $db->query("SELECT DISTINCT ten_hoc_phan FROM lop_hoc_phan ORDER BY ten_hoc_phan ASC")->fetchAll(PDO::FETCH_COLUMN);
+} catch (PDOException $e) {}
+
+// 3c. Lấy danh sách ánh xạ tên học phần và mã lớp học phần phục vụ liên kết gợi ý
+$suggest_classes_map = [];
+try {
+    $suggest_classes_map = $db->query("SELECT DISTINCT ten_hoc_phan, ma_lop_hp FROM lop_hoc_phan WHERE ma_lop_hp IS NOT NULL AND ma_lop_hp <> '' ORDER BY ten_hoc_phan ASC, ma_lop_hp ASC")->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {}
 
 // 4. Lấy lịch sử phiếu mượn thiết bị (Có lọc theo Học kỳ / Thời gian)

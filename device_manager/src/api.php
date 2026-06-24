@@ -62,16 +62,24 @@ if ($action === 'get_device') {
         $device = $stmt->fetch();
         if ($device) {
             $h_stmt = $db->prepare("
-                SELECT pm.ngay_muon, pm.trang_thai, gv.ho_ten_gv AS ten_giang_vien, pm.ten_lop, ct.so_luong, ct.tinh_trang, ct.ghi_chu
+                SELECT pm.ngay_muon, pm.trang_thai, gv.ho_ten_gv AS ten_giang_vien, pm.ten_lop, ct.so_luong, ct.tinh_trang, ct.ghi_chu,
+                       lhp.ten_hoc_phan
                 FROM chi_tiet_phieu_muon ct
                 JOIN phieu_muon pm ON ct.id_phieu_muon = pm.id
                 LEFT JOIN giang_vien gv ON pm.id_giang_vien = gv.id_giang_vien
+                LEFT JOIN lop_hoc_phan lhp ON pm.ten_lop = lhp.ma_lop_hp
                 WHERE ct.id_thiet_bi = :id_tb
                 ORDER BY pm.ngay_muon DESC
                 LIMIT 10
             ");
             $h_stmt->execute(['id_tb' => $device['id']]);
-            $device['history'] = $h_stmt->fetchAll();
+            $history = $h_stmt->fetchAll();
+            foreach ($history as &$row) {
+                if (!empty($row['ten_hoc_phan'])) {
+                    $row['ten_lop'] = $row['ten_hoc_phan'] . ' (' . $row['ten_lop'] . ')';
+                }
+            }
+            $device['history'] = $history;
             echo json_encode($device);
         } else {
             echo json_encode(['error' => 'Không tìm thấy thiết bị này trong hệ thống!']);
@@ -126,15 +134,22 @@ if ($action === 'device_history') {
         $h_stmt = $db->prepare("
             SELECT pm.id AS id_phieu, pm.ngay_muon, pm.trang_thai, pm.ten_lop,
                    gv.ho_ten_gv AS ten_giang_vien, gv.email,
-                   ct.so_luong, ct.tinh_trang, ct.ghi_chu
+                   ct.so_luong, ct.tinh_trang, ct.ghi_chu,
+                   lhp.ten_hoc_phan
             FROM chi_tiet_phieu_muon ct
             JOIN phieu_muon pm ON ct.id_phieu_muon = pm.id
             LEFT JOIN giang_vien gv ON pm.id_giang_vien = gv.id_giang_vien
+            LEFT JOIN lop_hoc_phan lhp ON pm.ten_lop = lhp.ma_lop_hp
             WHERE ct.id_thiet_bi = :id
             ORDER BY pm.ngay_muon DESC
         ");
         $h_stmt->execute(['id' => $device_id]);
         $history = $h_stmt->fetchAll();
+        foreach ($history as &$row) {
+            if (!empty($row['ten_hoc_phan'])) {
+                $row['ten_lop'] = $row['ten_hoc_phan'] . ' (' . $row['ten_lop'] . ')';
+            }
+        }
 
         echo json_encode([
             'device'     => $device,

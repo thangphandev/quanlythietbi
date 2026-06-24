@@ -254,31 +254,185 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
         $msg = "🔄 Tính năng đặt lại số lượng đã được tắt do hệ thống không còn theo dõi số lượng.";
     }
     
-    // 5. THU HỒI (TRẢ THIẾT BỊ)
-    if ($action === 'return_devices') {
-        $id_phieu = intval($_POST['id_phieu_muon']);
+    // 5. THÊM LƯỢT SỬ DỤNG THIẾT BỊ
+    if ($action === 'add_usage') {
+        $id_giang_vien = intval($_POST['id_giang_vien']) ?: null;
+        $ngay_muon = !empty($_POST['ngay_muon']) ? date('Y-m-d H:i:s', strtotime($_POST['ngay_muon'])) : date('Y-m-d H:i:s');
+        $ten_lop = trim($_POST['ten_lop']);
+        $email_xac_nhan = trim($_POST['email_xac_nhan']);
+        $tinh_trang_chung = trim($_POST['tinh_trang_chung']);
+        $selected_devices = $_POST['thiet_bi'] ?? [];
         
+        if (empty($id_giang_vien) || empty($ten_lop) || empty($selected_devices)) {
+            $error = "Vui lòng chọn giảng viên, điền tên học phần/mục đích và chọn ít nhất 1 thiết bị!";
+        } else {
+            try {
+                $db->beginTransaction();
+                
+                // Lưu thông tin phiếu sử dụng
+                $stmt = $db->prepare("
+                    INSERT INTO phieu_muon (ngay_muon, id_giang_vien, ten_lop, email_xac_nhan, tinh_trang_chung, trang_thai) 
+                    VALUES (:ngay_muon, :id_giang_vien, :ten_lop, :email_xac_nhan, :tinh_trang_chung, 'Đang mượn')
+                ");
+                $stmt->execute([
+                    'ngay_muon' => $ngay_muon,
+                    'id_giang_vien' => $id_giang_vien,
+                    'ten_lop' => $ten_lop,
+                    'email_xac_nhan' => $email_xac_nhan,
+                    'tinh_trang_chung' => $tinh_trang_chung
+                ]);
+                $id_phieu = $db->lastInsertId();
+                
+                // Lưu danh sách thiết bị đi kèm
+                $item_stmt = $db->prepare("
+                    INSERT INTO chi_tiet_phieu_muon (id_phieu_muon, id_thiet_bi, so_luong, tinh_trang) 
+                    VALUES (:id_phieu_muon, :id_thiet_bi, 1, 'Tốt')
+                ");
+                foreach ($selected_devices as $id_tb) {
+                    $item_stmt->execute([
+                        'id_phieu_muon' => $id_phieu,
+                        'id_thiet_bi' => intval($id_tb)
+                    ]);
+                }
+                
+                $db->commit();
+                $msg = "🎉 Đã tạo lượt sử dụng mới thành công!";
+            } catch (Exception $e) {
+                $db->rollBack();
+                $error = "Lỗi khi thêm lượt sử dụng: " . $e->getMessage();
+            }
+        }
+    }
+    
+    // 5d. THÊM LƯỢT SỬ DỤNG NHANH CHO 1 THIẾT BỊ NHOÀI NGÀY
+    if ($action === 'add_quick_usage') {
+        $id_thiet_bi = intval($_POST['id_thiet_bi']);
+        $id_giang_vien = intval($_POST['id_giang_vien']) ?: null;
+        $email_xac_nhan = trim($_POST['email_xac_nhan'] ?? '');
+        $ten_lop = trim($_POST['ten_lop'] ?? '');
+        $tinh_trang_chung = trim($_POST['tinh_trang_chung'] ?? '');
+        $ngay_su_dung = $_POST['ngay_su_dung'] ?? [];
+        
+        if (empty($id_thiet_bi) || empty($id_giang_vien) || empty($ten_lop) || empty($ngay_su_dung)) {
+            $error = "Vui lòng nhập đầy đủ thông tin giảng viên, tên học phần và chọn ít nhất một ngày sử dụng!";
+        } else {
+            try {
+                $db->beginTransaction();
+                
+                foreach ($ngay_su_dung as $date) {
+                    $time_part = date('H:i:s');
+                    $ngay_muon = $date . ' ' . $time_part;
+                    
+                    // Lưu thông tin phiếu sử dụng
+                    $stmt = $db->prepare("
+                        INSERT INTO phieu_muon (ngay_muon, id_giang_vien, ten_lop, email_xac_nhan, tinh_trang_chung, trang_thai) 
+                        VALUES (:ngay_muon, :id_giang_vien, :ten_lop, :email_xac_nhan, :tinh_trang_chung, 'Đang mượn')
+                    ");
+                    $stmt->execute([
+                        'ngay_muon' => $ngay_muon,
+                        'id_giang_vien' => $id_giang_vien,
+                        'ten_lop' => $ten_lop,
+                        'email_xac_nhan' => $email_xac_nhan,
+                        'tinh_trang_chung' => $tinh_trang_chung
+                    ]);
+                    $id_phieu = $db->lastInsertId();
+                    
+                    // Lưu thông tin chi tiết thiết bị đi kèm
+                    $item_stmt = $db->prepare("
+                        INSERT INTO chi_tiet_phieu_muon (id_phieu_muon, id_thiet_bi, so_luong, tinh_trang) 
+                        VALUES (:id_phieu_muon, :id_thiet_bi, 1, :tinh_trang)
+                    ");
+                    $item_stmt->execute([
+                        'id_phieu_muon' => $id_phieu,
+                        'id_thiet_bi' => $id_thiet_bi,
+                        'tinh_trang' => !empty($tinh_trang_chung) ? $tinh_trang_chung : 'Tốt'
+                    ]);
+                }
+                
+                $db->commit();
+                $msg = "🎉 Đã tạo nhanh " . count($ngay_su_dung) . " lượt sử dụng thiết bị thành công!";
+            } catch (Exception $e) {
+                $db->rollBack();
+                $error = "Lỗi khi thêm nhanh lượt sử dụng: " . $e->getMessage();
+            }
+        }
+    }
+    
+    // 5b. SỬA LƯỢT SỬ DỤNG THIẾT BỊ
+    if ($action === 'edit_usage') {
+        $id = intval($_POST['id']);
+        $id_giang_vien = intval($_POST['id_giang_vien']) ?: null;
+        $ngay_muon = !empty($_POST['ngay_muon']) ? date('Y-m-d H:i:s', strtotime($_POST['ngay_muon'])) : date('Y-m-d H:i:s');
+        $ten_lop = trim($_POST['ten_lop']);
+        $email_xac_nhan = trim($_POST['email_xac_nhan']);
+        $tinh_trang_chung = trim($_POST['tinh_trang_chung']);
+        $selected_devices = $_POST['thiet_bi'] ?? [];
+        
+        if (empty($id) || empty($id_giang_vien) || empty($ten_lop) || empty($selected_devices)) {
+            $error = "Vui lòng chọn giảng viên, điền tên học phần/mục đích và chọn ít nhất 1 thiết bị!";
+        } else {
+            try {
+                $db->beginTransaction();
+                
+                // Cập nhật thông tin phiếu sử dụng
+                $stmt = $db->prepare("
+                    UPDATE phieu_muon 
+                    SET ngay_muon = :ngay_muon, id_giang_vien = :id_giang_vien, ten_lop = :ten_lop, email_xac_nhan = :email_xac_nhan, tinh_trang_chung = :tinh_trang_chung 
+                    WHERE id = :id
+                ");
+                $stmt->execute([
+                    'ngay_muon' => $ngay_muon,
+                    'id_giang_vien' => $id_giang_vien,
+                    'ten_lop' => $ten_lop,
+                    'email_xac_nhan' => $email_xac_nhan,
+                    'tinh_trang_chung' => $tinh_trang_chung,
+                    'id' => $id
+                ]);
+                
+                // Xóa chi tiết cũ
+                $del_stmt = $db->prepare("DELETE FROM chi_tiet_phieu_muon WHERE id_phieu_muon = :id_phieu_muon");
+                $del_stmt->execute(['id_phieu_muon' => $id]);
+                
+                // Ghi lại chi tiết mới
+                $item_stmt = $db->prepare("
+                    INSERT INTO chi_tiet_phieu_muon (id_phieu_muon, id_thiet_bi, so_luong, tinh_trang) 
+                    VALUES (:id_phieu_muon, :id_thiet_bi, 1, 'Tốt')
+                ");
+                foreach ($selected_devices as $id_tb) {
+                    $item_stmt->execute([
+                        'id_phieu_muon' => $id,
+                        'id_thiet_bi' => intval($id_tb)
+                    ]);
+                }
+                
+                $db->commit();
+                $msg = "🎉 Đã cập nhật lượt sử dụng thành công!";
+            } catch (Exception $e) {
+                $db->rollBack();
+                $error = "Lỗi khi cập nhật lượt sử dụng: " . $e->getMessage();
+            }
+        }
+    }
+
+    // 5c. XÓA LƯỢT SỬ DỤNG THIẾT BỊ
+    if ($action === 'delete_usage') {
+        $id = intval($_POST['id']);
         try {
             $db->beginTransaction();
             
-            $chk_stmt = $db->prepare("SELECT trang_thai FROM phieu_muon WHERE id = :id FOR UPDATE");
-            $chk_stmt->execute(['id' => $id_phieu]);
-            $phieu = $chk_stmt->fetch();
+            // Xóa chi tiết trước
+            $del_stmt = $db->prepare("DELETE FROM chi_tiet_phieu_muon WHERE id_phieu_muon = :id_phieu_muon");
+            $del_stmt->execute(['id_phieu_muon' => $id]);
             
-            if ($phieu && $phieu['trang_thai'] === 'Đang mượn') {
-                // Không cập nhật số lượng thiết bị vì không còn cột số lượng
-                $up_phieu = $db->prepare("UPDATE phieu_muon SET trang_thai = 'Đã trả' WHERE id = :id");
-                $up_phieu->execute(['id' => $id_phieu]);
-                
-                $db->commit();
-                $msg = "✅ Đã ghi nhận trả tất cả thiết bị của phiếu mượn thành công!";
-            } else {
-                $db->rollBack();
-                $error = "Phiếu này đã được trả hoặc không tồn tại!";
-            }
+            // Xóa phiếu sử dụng
+            $stmt = $db->prepare("DELETE FROM phieu_muon WHERE id = :id");
+            $stmt->execute(['id' => $id]);
+            
+            $db->commit();
+            $msg = "🗑️ Đã xóa lượt sử dụng thành công!";
         } catch (Exception $e) {
             $db->rollBack();
-            $error = "Lỗi trả thiết bị: " . $e->getMessage();
+            $error = "Lỗi khi xóa lượt sử dụng: " . $e->getMessage();
         }
     }
     
