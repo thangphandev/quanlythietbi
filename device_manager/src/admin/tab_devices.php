@@ -82,9 +82,9 @@
                     <th>Thiết bị (DeviceName)</th>
                     <th>ID / Mã thiết bị</th>
                     <th>Phân loại</th>
-                    <th>Nơi sử dụng</th>
-                    <th>Năm sử dụng</th>
-                    <th>Tình trạng</th>
+                    <th style="text-align: center;">Vị trí</th>
+                    <th style="text-align: center;">Năm</th>
+                    <th style="text-align: center;">Tình trạng</th>
                     <th>GV Quản lý</th>
                     <th style="width: 270px; min-width: 270px; text-align: center;">Hành động</th>
                 </tr>
@@ -142,10 +142,10 @@
                                 </span>
                             <?php endif; ?>
                         </td>
-                        <td><?= htmlspecialchars($d['vi_tri']) ?></td>
-                        <td style="font-family: monospace; font-weight: 600;"><?= $d['nam_su_dung'] ?></td>
-                        <td>
-                            <span class="<?= $cls ?>" style="font-size: 0.85rem; padding: 4px 8px; border-radius: 12px; font-weight: 600;"><?= htmlspecialchars($d['chat_luong']) ?></span>
+                        <td style="text-align: center;"><?= htmlspecialchars($d['vi_tri']) ?></td>
+                        <td style="font-family: monospace; font-weight: 600; text-align: center;"><?= $d['nam_su_dung'] ?></td>
+                        <td style="text-align: center;">
+                            <span class="<?= $cls ?>" style="display: inline-block; font-size: 0.85rem; padding: 4px 8px; border-radius: 12px; font-weight: 600;"><?= htmlspecialchars($d['chat_luong']) ?></span>
                         </td>
                         <td style="font-weight:500; color:var(--text-secondary);"><?= htmlspecialchars($d['ten_gv_quan_ly'] ?: 'Chưa phân công') ?></td>
                         <td>
