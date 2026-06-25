@@ -91,7 +91,7 @@ if ($action === 'get_device') {
 }
 
 // ============================================================
-// UPDATE QUALITY — Cập nhật chất lượng thiết bị
+// UPDATE QUALITY — Cập nhật Tình trạng thiết bị
 // ============================================================
 if ($action === 'update_quality') {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') { echo json_encode(['error' => 'Phương thức không hợp lệ!']); exit; }

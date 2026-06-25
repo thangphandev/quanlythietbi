@@ -64,9 +64,9 @@
                 </div>
             </div>
 
-            <!-- Đánh giá chất lượng -->
+            <!-- Đánh giá Tình trạng -->
             <div style="margin-bottom: 12px;">
-                <label for="quick_tinh_trang_chung" style="display:block; font-weight:600; font-size:0.82rem; margin-bottom:5px; color:var(--text-primary);">Đánh giá chất lượng bàn giao:</label>
+                <label for="quick_tinh_trang_chung" style="display:block; font-weight:600; font-size:0.82rem; margin-bottom:5px; color:var(--text-primary);">Đánh giá Tình trạng bàn giao:</label>
                 <input type="text" id="quick_tinh_trang_chung" name="tinh_trang_chung" placeholder="Ví dụ: Đầy đủ phụ kiện, hoạt động tốt" style="width:100%; height:38px; padding:6px 10px; border-radius:8px; border:1px solid #cbd5e1; box-sizing:border-box; color:var(--text-primary); background:#fff; font-size:0.88rem;">
             </div>
 

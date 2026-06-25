@@ -64,7 +64,7 @@
                     <th style="width: 150px;">Giảng viên sử dụng</th>
                     <th style="width: 200px;">Mã lớp / Mục đích</th>
                     <th style="width: 420px;">Thiết bị sử dụng</th>
-                    <th style="width: 210px;">Đánh giá chất lượng bàn giao</th>
+                    <th style="width: 210px;">Đánh giá Tình trạng bàn giao</th>
                     <th style="width: 140px; text-align: center;">Hành động</th>
                 </tr>
             </thead>

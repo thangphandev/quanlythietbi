@@ -26,13 +26,13 @@
             <p style="color:var(--text-secondary); font-size:0.88rem; line-height:1.6; margin-bottom:15px;">
                 Tải lên tệp CSV chứa danh sách thiết bị của bạn. 
                 <br>
-                Cấu trúc tệp CSV bắt buộc gồm các cột: <strong>DeviceName, ID, Nơi sử dụng, Năm sử dụng, Số lượng, Chất lượng còn lại, GV QUẢN LÝ</strong>.
+                Cấu trúc tệp CSV bắt buộc gồm các cột: <strong>DeviceName, ID, Nơi sử dụng, Năm sử dụng, Số lượng, Tình trạng, GV QUẢN LÝ</strong>.
                 <br>
                 <span style="color:var(--accent-blue); font-weight:600;">💡 Quy tắc thông minh:</span>
                 <br>
                 • <strong>Số lượng:</strong> Nếu lớn hơn 1 (ví dụ: 3), hệ thống sẽ tự động tách thành 3 bản ghi riêng biệt trong cơ sở dữ liệu và đánh số thứ tự như <code>Mã (No.1)</code>, <code>Mã (No.2)</code>, <code>Mã (No.3)</code>.
                 <br>
-                • <strong>Chất lượng:</strong> Nhập <code>Tốt</code> hoặc <code>Hư hỏng: [Chi tiết nội dung hư hỏng]</code>.
+                • <strong>Tình trạng:</strong> Nhập <code>Tốt</code> hoặc <code>Hư hỏng: [Chi tiết nội dung hư hỏng]</code>.
                 <br>
                 • <strong>GV QUẢN LÝ:</strong> Nhập họ tên giảng viên, hệ thống sẽ tự động khớp chính xác hoặc khớp tương đối với danh sách giảng viên trong CSDL.
             </p>

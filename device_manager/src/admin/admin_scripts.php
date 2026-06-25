@@ -1467,7 +1467,7 @@
         // Ô 5 (index 5): Năm sử dụng
         cells[5].textContent = device.nam_su_dung || '';
         
-        // Ô 6 (index 6): Chất lượng
+        // Ô 6 (index 6): Tình trạng
         const qualitySpan = cells[6].querySelector('span');
         if (qualitySpan) {
             qualitySpan.textContent = device.chat_luong;

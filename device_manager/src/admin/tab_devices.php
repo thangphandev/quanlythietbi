@@ -44,7 +44,7 @@
                 style="width:100%; height:38px; padding:0 12px; border:1px solid #cbd5e1; border-radius:9px; font-size:0.88rem; background:#f8fafc; box-sizing:border-box;">
         </div>
         <div style="flex:1; min-width:130px;">
-            <label style="font-size:0.78rem; font-weight:600; color:var(--text-muted); display:block; margin-bottom:5px;">⚙️ Chất lượng</label>
+            <label style="font-size:0.78rem; font-weight:600; color:var(--text-muted); display:block; margin-bottom:5px;">⚙️ Tình trạng</label>
             <select id="filterQuality" onchange="filterDevicesTable()"
                 style="width:100%; height:38px; padding:0 10px; border:1px solid #cbd5e1; border-radius:9px; font-size:0.88rem; background:#f8fafc; box-sizing:border-box;">
                 <option value="">Tất cả</option>
@@ -84,7 +84,7 @@
                     <th>Phân loại</th>
                     <th>Nơi sử dụng</th>
                     <th>Năm sử dụng</th>
-                    <th>Chất lượng còn lại</th>
+                    <th>Tình trạng</th>
                     <th>GV Quản lý</th>
                     <th style="width: 270px; min-width: 270px; text-align: center;">Hành động</th>
                 </tr>

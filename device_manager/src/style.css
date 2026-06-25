@@ -492,7 +492,8 @@ footer a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 3000;  /* luôn trên cart-drawer (2100) */
+    z-index: 3000;
+    /* luôn trên cart-drawer (2100) */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -533,7 +534,7 @@ footer a:hover {
     position: relative;
     z-index: 3001;
     color: var(--text-primary);
-    
+
     /* Responsive scrollable sizing */
     max-height: 90vh;
     max-height: calc(100vh - 40px);
@@ -546,13 +547,16 @@ footer a:hover {
 .modal-content::-webkit-scrollbar {
     width: 6px;
 }
+
 .modal-content::-webkit-scrollbar-track {
     background: transparent;
 }
+
 .modal-content::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 10px;
 }
+
 .modal-content::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
 }
@@ -777,14 +781,17 @@ footer a:hover {
 .success-text-container::-webkit-scrollbar {
     width: 6px;
 }
+
 .success-text-container::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.03);
     border-radius: 10px;
 }
+
 .success-text-container::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 10px;
 }
+
 .success-text-container::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.25);
 }
@@ -1034,8 +1041,14 @@ footer a:hover {
 }
 
 /* Selected compact device cards (Giỏ đồ) — legacy classes kept for compat */
-.selected-device-card { display: none; } /* replaced by .sdc */
-.selected-device-remove { display: none; }
+.selected-device-card {
+    display: none;
+}
+
+/* replaced by .sdc */
+.selected-device-remove {
+    display: none;
+}
 
 /* ============================================================
    SDC — Selected Device Card (thiết kế hiện đại)
@@ -1044,14 +1057,15 @@ footer a:hover {
     background: #fff;
     border-radius: 14px;
     border-left: 4px solid var(--sdc-accent, #10b981);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
     overflow: hidden;
     transition: box-shadow 0.2s, transform 0.15s;
-    margin-bottom: 0;  /* gap handled by parent flex */
+    margin-bottom: 0;
+    /* gap handled by parent flex */
 }
 
 .sdc:hover {
-    box-shadow: 0 6px 22px rgba(0,0,0,0.11);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.11);
     transform: translateY(-1px);
 }
 
@@ -1074,7 +1088,10 @@ footer a:hover {
     cursor: zoom-in;
     transition: transform 0.2s;
 }
-.sdc-thumb:hover { transform: scale(1.07); }
+
+.sdc-thumb:hover {
+    transform: scale(1.07);
+}
 
 .sdc-thumb-noimg {
     background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
@@ -1117,7 +1134,7 @@ footer a:hover {
     font-weight: 700;
     font-family: 'Courier New', monospace;
     color: var(--accent-blue);
-    background: rgba(0,86,179,0.08);
+    background: rgba(0, 86, 179, 0.08);
     padding: 2px 6px;
     border-radius: 5px;
     letter-spacing: 0.1px;
@@ -1160,28 +1177,30 @@ footer a:hover {
 }
 
 .sdc-btn-info {
-    background: rgba(0,86,179,0.07);
+    background: rgba(0, 86, 179, 0.07);
     color: var(--accent-blue);
-    border: 1px solid rgba(0,86,179,0.15);
+    border: 1px solid rgba(0, 86, 179, 0.15);
     font-size: 1.05rem;
 }
+
 .sdc-btn-info:hover {
     background: var(--accent-blue);
     color: #fff;
-    box-shadow: 0 3px 8px rgba(0,86,179,0.25);
+    box-shadow: 0 3px 8px rgba(0, 86, 179, 0.25);
     transform: scale(1.08);
 }
 
 .sdc-btn-remove {
-    background: rgba(239,68,68,0.07);
+    background: rgba(239, 68, 68, 0.07);
     color: #ef4444;
-    border: 1px solid rgba(239,68,68,0.15);
+    border: 1px solid rgba(239, 68, 68, 0.15);
     font-size: 1.15rem;
 }
+
 .sdc-btn-remove:hover {
     background: #ef4444;
     color: #fff;
-    box-shadow: 0 3px 8px rgba(239,68,68,0.25);
+    box-shadow: 0 3px 8px rgba(239, 68, 68, 0.25);
     transform: scale(1.08);
 }
 
@@ -1191,8 +1210,8 @@ footer a:hover {
     align-items: center;
     gap: 8px;
     padding: 7px 12px 10px 12px;
-    border-top: 1px solid rgba(0,0,0,0.05);
-    background: rgba(248,250,252,0.8);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(248, 250, 252, 0.8);
     flex-wrap: wrap;
 }
 
@@ -1218,7 +1237,11 @@ footer a:hover {
     cursor: pointer;
     transition: border-color 0.15s;
 }
-.sdc-select:focus { border-color: var(--accent-blue); outline: none; }
+
+.sdc-select:focus {
+    border-color: var(--accent-blue);
+    outline: none;
+}
 
 .sdc-textarea {
     width: 100%;
@@ -1234,7 +1257,11 @@ footer a:hover {
     line-height: 1.4;
     transition: border-color 0.15s;
 }
-.sdc-textarea:focus { border-color: var(--accent-blue); outline: none; }
+
+.sdc-textarea:focus {
+    border-color: var(--accent-blue);
+    outline: none;
+}
 
 /* Device Usage History lists in Details Modal */
 .history-title {
@@ -1605,7 +1632,7 @@ footer a:hover {
     gap: 10px;
     background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 50px;
     padding: 8px 18px;
     color: #fff;
@@ -1615,8 +1642,8 @@ footer a:hover {
 }
 
 .image-zoom-btn {
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     color: #fff;
     width: 32px;
     height: 32px;
@@ -1632,7 +1659,7 @@ footer a:hover {
 }
 
 .image-zoom-btn:hover {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .image-zoom-level {
@@ -1717,7 +1744,8 @@ footer a:hover {
     background: rgba(15, 23, 42, 0.4);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    z-index: 2000;  /* dưới cart-drawer một bậc */
+    z-index: 2000;
+    /* dưới cart-drawer một bậc */
     opacity: 0;
     pointer-events: none;
     visibility: hidden;
@@ -1745,7 +1773,8 @@ footer a:hover {
     box-shadow: 0 -15px 40px rgba(0, 40, 80, 0.12);
     border: 1px solid rgba(255, 255, 255, 1);
     border-bottom: none;
-    z-index: 2100;  /* trên overlay, dưới modal (3000) */
+    z-index: 2100;
+    /* trên overlay, dưới modal (3000) */
     transform: translateY(100%);
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.4s ease;
     display: flex;
@@ -2606,7 +2635,7 @@ footer a:hover {
     margin-left: 2px;
 }
 
-/* Chất lượng */
+/* Tình trạng */
 .dt-col-quality {
     white-space: nowrap;
 }
@@ -2889,7 +2918,8 @@ footer a:hover {
     border-radius: 4px;
     letter-spacing: 0.15px;
     line-height: 1.4;
-    word-break: break-all;   /* mã dài xuống 2 dòng được */
+    word-break: break-all;
+    /* mã dài xuống 2 dòng được */
     flex: 1;
     min-width: 0;
     font-family: 'Courier New', monospace;

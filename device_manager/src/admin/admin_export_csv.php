@@ -56,7 +56,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'export_csv') {
         xl_header('Phân loại'),
         xl_header('Vị trí đặt'),
         xl_header('Năm sử dụng'),
-        xl_header('Tình trạng chất lượng'),
+        xl_header('Tình trạng Tình trạng'),
         xl_header('Giáo viên quản lý')
     ];
     
@@ -303,7 +303,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'export_usage_logs') {
         xl_header('Email xác nhận'),
         xl_header('Mã lớp / Mục đích'),
         xl_header('Thiết bị sử dụng'),
-        xl_header('Đánh giá chất lượng bàn giao')
+        xl_header('Đánh giá Tình trạng bàn giao')
     ];
     
     try {

@@ -51,9 +51,9 @@
                 <input type="text" id="usage_ten_lop" name="ten_lop" required placeholder="Ví dụ: Thực hành cấu tạo ô tô Hybrid hoặc Nghiên cứu khoa học" style="width:100%; height:40px; padding:8px 12px; border-radius:10px; border:1px solid #cbd5e1; box-sizing:border-box; color:var(--text-primary); background:#fff; font-size:0.9rem;">
             </div>
 
-            <!-- Đánh giá chất lượng bàn giao -->
+            <!-- Đánh giá Tình trạng bàn giao -->
             <div style="margin-bottom: 14px;">
-                <label for="usage_tinh_trang_chung" style="display:block; font-weight:600; font-size:0.88rem; margin-bottom:6px; color:var(--text-primary);">Đánh giá chất lượng bàn giao:</label>
+                <label for="usage_tinh_trang_chung" style="display:block; font-weight:600; font-size:0.88rem; margin-bottom:6px; color:var(--text-primary);">Đánh giá Tình trạng bàn giao:</label>
                 <input type="text" id="usage_tinh_trang_chung" name="tinh_trang_chung" placeholder="Ví dụ: Thiết bị hoạt động bình thường, đầy đủ giắc cắm" style="width:100%; height:40px; padding:8px 12px; border-radius:10px; border:1px solid #cbd5e1; box-sizing:border-box; color:var(--text-primary); background:#fff; font-size:0.9rem;">
             </div>
 

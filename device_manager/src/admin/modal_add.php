@@ -73,7 +73,7 @@
                 <input type="url" id="add_tai_lieu_link" name="tai_lieu_link" placeholder="https://drive.google.com/drive/folders/..." style="width:100%; height:40px; padding:8px 12px; border-radius:10px; border:1px solid #cbd5e1; box-sizing:border-box; color:var(--text-primary); background:#fff; font-size:0.9rem;">
             </div>
 
-            <!-- Tình trạng chất lượng & Tải lên hình ảnh xếp song song -->
+            <!-- Tình trạng Tình trạng & Tải lên hình ảnh xếp song song -->
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 18px;">
                 <div>
                     <label for="add_chat_luong" style="display:block; font-weight:600; font-size:0.88rem; margin-bottom:6px; color:var(--text-primary);">Tình trạng thiết bị:</label>

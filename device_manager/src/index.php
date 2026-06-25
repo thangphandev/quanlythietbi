@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         
         $id_phieu_muon = $db->lastInsertId();
         
-        // 3. Thêm chi tiết và cập nhật số lượng/chất lượng trong thiet_bi
+        // 3. Thêm chi tiết và cập nhật số lượng/Tình trạng trong thiet_bi
         $ct_stmt = $db->prepare("
             INSERT INTO chi_tiet_phieu_muon (id_phieu_muon, id_thiet_bi, so_luong, tinh_trang, ghi_chu) 
             VALUES (:id_pm, :id_tb, :qty, :tinh_trang, :ghi_chu)
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 'ghi_chu'    => $detail
             ]);
             
-            // Xác định chuỗi chất lượng cập nhật
+            // Xác định chuỗi Tình trạng cập nhật
             $new_chat_luong = $cond;
             if (($cond === 'Hư hỏng' || $cond === 'Lỗi nhẹ') && !empty($detail)) {
                 $new_chat_luong = "$cond: " . $detail;
@@ -446,7 +446,7 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
                     <input type="text" id="tenLop" value="<?= htmlspecialchars($ma_lop_hp) ?>" placeholder="Nhập lớp học hoặc Nghiên cứu - khai thác..." required style="height:48px; font-size:0.98rem; padding:5px 5px; margin-top:5px;">
                 </div>
 
-                <label style="margin-top: 5px; border-top: 1px dashed #cbd5e1; padding-top:5px;">Chi tiết thiết bị & Đánh giá chất lượng:</label>
+                <label style="margin-top: 5px; border-top: 1px dashed #cbd5e1; padding-top:5px;">Chi tiết thiết bị & Đánh giá Tình trạng:</label>
                 
                 <!-- Giỏ chứa thiết bị đã chọn sẽ hiển thị linh động qua JS -->
                 <div id="cartContainer" style="margin-top:10px; min-height:120px; display:flex; flex-direction:column; gap:12px;">
@@ -514,7 +514,7 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
                     <span id="m_gv_quan_ly" style="font-weight: 600; color: var(--accent-blue);">Chưa phân công</span>
                 </div>
                 <div class="info-item" style="padding:8px 12px; grid-column: span 2;">
-                    <span>Tình trạng chất lượng hiện tại</span>
+                    <span>Tình trạng Tình trạng hiện tại</span>
                     <strong id="m_chat_luong" style="font-size: 0.98rem; font-weight: 650; color: var(--success-green);">Tốt</strong>
                 </div>
                 
@@ -927,7 +927,7 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
                     document.getElementById("m_nam_su_dung").innerText = data.nam_su_dung || "Chưa rõ";
                     document.getElementById("m_loai").innerText = data.ten_loai || "Chưa phân loại";
                     
-                    // Nạp tình trạng chất lượng mới nhất
+                    // Nạp tình trạng Tình trạng mới nhất
                     const statusEl = document.getElementById("m_chat_luong");
                     if (statusEl) {
                         statusEl.innerText = data.chat_luong || "Tốt";

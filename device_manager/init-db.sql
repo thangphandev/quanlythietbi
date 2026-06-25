@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS thiet_bi (
     ten_thiet_bi VARCHAR(255) NOT NULL,            -- Tên thiết bị
     vi_tri VARCHAR(255) DEFAULT 'Phòng thiết bị',   -- Vị trí đặt thiết bị (Ví dụ: Xưởng Động lực)
     nam_su_dung INT,                               -- Năm đưa vào sử dụng (Ví dụ: 2022)
-    chat_luong VARCHAR(255) DEFAULT 'Tốt',         -- Trạng thái/chất lượng (Ví dụ: Tốt, Hư hỏng: Lỗi màn hình)
+    chat_luong VARCHAR(255) DEFAULT 'Tốt',         -- Trạng thái/Tình trạng (Ví dụ: Tốt, Hư hỏng: Lỗi màn hình)
     id_giang_vien_quan_ly INT REFERENCES giang_vien(id_giang_vien) ON DELETE SET NULL, -- Giảng viên phụ trách
     id_loai INT REFERENCES loai(id_loai) ON DELETE SET NULL, -- Phân loại thiết bị
     tai_lieu_link TEXT DEFAULT '',                 -- Đường dẫn thư mục tài liệu Google Drive
