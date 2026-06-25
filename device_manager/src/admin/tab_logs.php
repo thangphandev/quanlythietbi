@@ -56,14 +56,15 @@
        
     </div>
     
+    <div class="table-responsive">
         <table>
             <thead>
                 <tr>
-                    <th>Thời gian sử dụng</th>
-                    <th>Giảng viên sử dụng</th>
-                    <th>Mã lớp / Mục đích</th>
-                    <th>Thiết bị sử dụng</th>
-                    <th>Đánh giá chất lượng bàn giao</th>
+                    <th style="width: 150px;">Thời gian sử dụng</th>
+                    <th style="width: 150px;">Giảng viên sử dụng</th>
+                    <th style="width: 200px;">Mã lớp / Mục đích</th>
+                    <th style="width: 420px;">Thiết bị sử dụng</th>
+                    <th style="width: 210px;">Đánh giá chất lượng bàn giao</th>
                     <th style="width: 140px; text-align: center;">Hành động</th>
                 </tr>
             </thead>
@@ -108,8 +109,8 @@
                                 </span>
                             </td>
                             <td>
-                                <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;">
-                                    <button type="button" class="btn-table-action btn-edit" style="padding: 5px 9px; font-size: 0.8rem;" 
+                                <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
+                                    <button type="button" class="btn-table-action btn-edit" 
                                             onclick="openEditUsageModal(<?= htmlspecialchars(json_encode([
                                                 'id' => intval($h['id']),
                                                 'ngay_muon' => date('Y-m-d\TH:i', strtotime($h['ngay_muon'])),
@@ -122,7 +123,7 @@
                                     <form method="POST" action="admin.php?tab=logs-tab" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa lượt sử dụng này không?');">
                                         <input type="hidden" name="admin_action" value="delete_usage">
                                         <input type="hidden" name="id" value="<?= $h['id'] ?>">
-                                        <button type="submit" class="btn-table-action btn-delete" style="padding: 5px 9px; font-size: 0.8rem;">❌ Xóa</button>
+                                        <button type="submit" class="btn-table-action btn-delete">❌ Xóa</button>
                                     </form>
                                 </div>
                             </td>

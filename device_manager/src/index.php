@@ -537,15 +537,19 @@ $scan_ma_thiet_bi = $_GET['scan'] ?? '';
 
     <!-- OVERLAY THÀNH CÔNG VỚI HIỆU ỨNG CHECKMARK HOẠT HỌA -->
     <div class="success-overlay" id="successOverlay">
-        <div class="checkmark-circle">
-            <svg viewBox="0 0 52 52">
-                <path d="M14 27l8 8 16-16"/>
-            </svg>
-        </div>
-        <div class="success-msg">
-            <h2>Gửi xác nhận thành công!</h2>
-            <p id="successText">Phiếu sử dụng thiết bị đã được lưu trữ cục bộ thành công.</p>
-            <button type="button" class="btn-success-close" id="btnSuccessClose">👌 ĐỒNG Ý</button>
+        <div class="success-modal-card">
+            <div class="checkmark-circle">
+                <svg viewBox="0 0 52 52">
+                    <path d="M14 27l8 8 16-16"/>
+                </svg>
+            </div>
+            <div class="success-msg">
+                <h2>Gửi xác nhận thành công!</h2>
+                <div class="success-text-container">
+                    <p id="successText">Phiếu sử dụng thiết bị đã được lưu trữ cục bộ thành công.</p>
+                </div>
+                <button type="button" class="btn-success-close" id="btnSuccessClose">👌 ĐỒNG Ý</button>
+            </div>
         </div>
     </div>
 

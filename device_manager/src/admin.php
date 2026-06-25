@@ -223,56 +223,80 @@ $active_tab = isset($_GET['tab']) ? trim($_GET['tab']) : 'devices-tab';
 </head>
 <body>
 
-    <!-- Header Section -->
-    <header>
-        <div class="header-content">
-            <h1>HỆ THỐNG QUẢN LÝ THIẾT BỊ - BẢNG ĐIỀU KHIỂN ADMIN</h1>
-            <div class="user-info-bar">
-                <span>👤 Quản trị viên: <strong><?= htmlspecialchars($ho_ten_gv) ?></strong></span>
-                <a href="logout.php">🚪 Đăng xuất</a>
+    <div class="admin-layout" id="adminLayout">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <h2>⚙️ HỆ THỐNG ADMIN</h2>
+                <button type="button" class="btn-close-sidebar" onclick="toggleSidebar()">✕</button>
             </div>
-        </div>
-    </header>
-
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Navigation bar -->
-        <div class="admin-nav">
-            <h2>⚙ Cài đặt & Quản lý Hệ thống</h2>
-            <a href="index.php" class="btn-nav-back">🔙 QUAY LẠI TRANG CHỦ</a>
-        </div>
-
-        <!-- Alert messages -->
-        <?php if (!empty($msg)): ?>
-            <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); color:#047857; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:600;">
-                <?= $msg ?>
+            
+            <div class="sidebar-menu">
+                <button type="button" class="tab-btn <?= $active_tab === 'devices-tab' ? 'active' : '' ?>" onclick="switchTab('devices-tab', this)">📦 THIẾT BỊ</button>
+                <button type="button" class="tab-btn <?= $active_tab === 'logs-tab' ? 'active' : '' ?>" onclick="switchTab('logs-tab', this)">📋 NHẬT KÝ SỬ DỤNG</button>
+                <button type="button" class="tab-btn <?= $active_tab === 'stats-tab' ? 'active' : '' ?>" onclick="switchTab('stats-tab', this)">📊 THỐNG KÊ & BÁO CÁO</button>
+                <button type="button" class="tab-btn <?= $active_tab === 'crawler-tab' ? 'active' : '' ?>" onclick="switchTab('crawler-tab', this)">🔄 ĐỒNG BỘ THỜI KHÓA BIỂU</button>
+                <button type="button" class="tab-btn <?= $active_tab === 'backup-tab' ? 'active' : '' ?>" onclick="switchTab('backup-tab', this)">💾 SAO LƯU & IMPORT/EXPORT</button>
+                <button type="button" class="tab-btn <?= $active_tab === 'categories-tab' ? 'active' : '' ?>" onclick="switchTab('categories-tab', this)">📁 LOẠI THIẾT BỊ</button>
             </div>
-        <?php endif; ?>
-        <?php if (!empty($error)): ?>
-            <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); color:#b91c1c; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:600;">
-                ⚠️ <?= $error ?>
+            
+            <div class="sidebar-footer">
+                <a href="index.php" class="btn-sidebar-back">🔙 TRANG CHỦ</a>
+                <a href="logout.php" class="btn-sidebar-logout">🚪 ĐĂNG XUẤT</a>
             </div>
-        <?php endif; ?>
+        </aside>
+        
+        <!-- Sidebar Overlay (mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Main Content Area -->
+        <main class="admin-main">
+            <!-- Topbar Header -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <button type="button" class="btn-toggle-sidebar" onclick="toggleSidebar()" title="Đóng/Mở Sidebar">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <span class="topbar-title">⚙ Cài đặt & Quản lý Hệ thống</span>
+                </div>
+                <div class="topbar-right">
+                    <span class="admin-user-info">👤 Quản trị viên: <strong><?= htmlspecialchars($ho_ten_gv) ?></strong></span>
+                    <a href="index.php" class="btn-topbar-nav">🏠 Trang chủ</a>
+                  
+                </div>
+            </header>
+            
+            <!-- Main Content Container -->
+            <div class="admin-content-container">
+                <div class="admin-content-card">
+                    <!-- Alert messages -->
+                    <?php if (!empty($msg)): ?>
+                        <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); color:#047857; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:600;">
+                            <?= $msg ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($error)): ?>
+                        <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); color:#b91c1c; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:600;">
+                            ⚠️ <?= $error ?>
+                        </div>
+                    <?php endif; ?>
 
-        <!-- Tabs Header Navigation -->
-        <div class="tabs-header">
-            <button type="button" class="tab-btn <?= $active_tab === 'devices-tab' ? 'active' : '' ?>" onclick="switchTab('devices-tab', this)">📦 THIẾT BỊ</button>
-            <button type="button" class="tab-btn <?= $active_tab === 'logs-tab' ? 'active' : '' ?>" onclick="switchTab('logs-tab', this)">📋 NHẬT KÝ SỬ DỤNG</button>
-            <button type="button" class="tab-btn <?= $active_tab === 'stats-tab' ? 'active' : '' ?>" onclick="switchTab('stats-tab', this)">📊 THỐNG KÊ & BÁO CÁO</button>
-            <button type="button" class="tab-btn <?= $active_tab === 'crawler-tab' ? 'active' : '' ?>" onclick="switchTab('crawler-tab', this)">🔄 ĐỒNG BỘ THỜI KHÓA BIỂU</button>
-            <button type="button" class="tab-btn <?= $active_tab === 'backup-tab' ? 'active' : '' ?>" onclick="switchTab('backup-tab', this)">💾 SAO LƯU & IMPORT/EXPORT</button>
-            <button type="button" class="tab-btn <?= $active_tab === 'categories-tab' ? 'active' : '' ?>" onclick="switchTab('categories-tab', this)">📁 LOẠI THIẾT BỊ</button>
-        </div>
-
-        <!-- HTML Tabs Content -->
-        <?php include 'admin/tab_devices.php'; ?>
-        <?php include 'admin/tab_categories.php'; ?>
-        <?php include 'admin/tab_logs.php'; ?>
-        <?php include 'admin/tab_stats.php'; ?>
-        <?php include 'admin/tab_crawler.php'; ?>
-        <?php include 'admin/tab_backup.php'; ?>
-
+                    <!-- HTML Tabs Content -->
+                    <?php include 'admin/tab_devices.php'; ?>
+                    <?php include 'admin/tab_categories.php'; ?>
+                    <?php include 'admin/tab_logs.php'; ?>
+                    <?php include 'admin/tab_stats.php'; ?>
+                    <?php include 'admin/tab_crawler.php'; ?>
+                    <?php include 'admin/tab_backup.php'; ?>
+                </div>
+            </div>
+        </main>
     </div>
+
 
     <!-- Modals -->
     <?php include 'admin/modal_qr.php'; ?>
@@ -297,5 +321,11 @@ $active_tab = isset($_GET['tab']) ? trim($_GET['tab']) : 'devices-tab';
         <div class="image-zoom-close" onclick="closeImageZoom()">&times;</div>
         <img class="image-zoom-content" id="imageZoomContent" src="" alt="Zoomed Image" onclick="event.stopPropagation()">
     </div>
+    <!-- NÚT LÊN ĐẦU TRANG (SCROLL TO TOP) -->
+    <button type="button" class="back-to-top" id="btnBackToTop" title="Lên đầu trang">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
 </body>
 </html>

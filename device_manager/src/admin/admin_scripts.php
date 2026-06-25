@@ -97,6 +97,21 @@
         filterDevicesTable();
     }
 
+    // Hàm đóng/mở Sidebar
+    function toggleSidebar() {
+        const layout = document.getElementById("adminLayout");
+        if (!layout) return;
+        
+        const isMobile = window.innerWidth <= 992;
+        if (isMobile) {
+            layout.classList.toggle("sidebar-active");
+        } else {
+            layout.classList.toggle("sidebar-collapsed");
+            const isCollapsed = layout.classList.contains("sidebar-collapsed");
+            localStorage.setItem("admin_sidebar_collapsed", isCollapsed ? "true" : "false");
+        }
+    }
+
     // Chuyển đổi tab hiển thị
     function switchTab(tabId, btn) {
         document.querySelectorAll(".tab-content").forEach(tab => {
@@ -108,6 +123,12 @@
         
         document.getElementById(tabId).classList.add("active");
         btn.classList.add("active");
+        
+        // Tự động đóng sidebar trên mobile khi chọn tab
+        const layout = document.getElementById("adminLayout");
+        if (layout && layout.classList.contains("sidebar-active")) {
+            layout.classList.remove("sidebar-active");
+        }
         
         if (tabId === 'crawler-tab') {
             pollCrawlerStatus();
@@ -125,6 +146,17 @@
             switchStatsSubTab('stats-top-section');
         }
     }
+
+    // Phục hồi trạng thái sidebar khi load trang
+    document.addEventListener("DOMContentLoaded", function() {
+        if (window.innerWidth > 992) {
+            const isCollapsed = localStorage.getItem("admin_sidebar_collapsed");
+            const layout = document.getElementById("adminLayout");
+            if (layout && isCollapsed === "true") {
+                layout.classList.add("sidebar-collapsed");
+            }
+        }
+    });
 
     // ==============================================================================
     // ĐIỀU KHIỂN SUB-TAB THỐNG KÊ
@@ -1703,5 +1735,33 @@
                 alert("Vui lòng tích chọn ít nhất 1 ngày sử dụng trên lịch tháng!");
             }
         });
+    }
+
+    // ==============================================================================
+    // FLOATING BACK TO TOP BUTTON LOGIC
+    // ==============================================================================
+    const btnBackToTop = document.getElementById("btnBackToTop");
+    if (btnBackToTop) {
+        const checkScroll = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+            if (scrollTop > 50) {
+                btnBackToTop.classList.add("show");
+            } else {
+                btnBackToTop.classList.remove("show");
+            }
+        };
+        
+        window.addEventListener("scroll", checkScroll);
+        window.addEventListener("resize", checkScroll);
+        
+        btnBackToTop.addEventListener("click", () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+        
+        // Chạy kiểm tra ngay sau khi load trang
+        setTimeout(checkScroll, 300);
     }
 </script>

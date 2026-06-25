@@ -659,18 +659,18 @@ footer a:hover {
 }
 
 /* Success Checkmark Overlay Animation */
+/* Success Checkmark Overlay Animation */
 .success-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 23, 42, 0.95);
+    background: rgba(15, 23, 42, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     z-index: 2000;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     opacity: 0;
@@ -683,9 +683,32 @@ footer a:hover {
     pointer-events: auto;
 }
 
+.success-modal-card {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 35px 25px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    overflow: hidden;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.success-overlay.active .success-modal-card {
+    transform: scale(1);
+}
+
 .checkmark-circle {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     background: var(--success-green);
     display: flex;
@@ -693,7 +716,8 @@ footer a:hover {
     align-items: center;
     box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
     transform: scale(0.3);
-    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s;
+    flex-shrink: 0;
 }
 
 .success-overlay.active .checkmark-circle {
@@ -701,8 +725,8 @@ footer a:hover {
 }
 
 .checkmark-circle svg {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     fill: none;
     stroke: #fff;
     stroke-width: 5;
@@ -710,7 +734,7 @@ footer a:hover {
     stroke-linejoin: round;
     stroke-dasharray: 80;
     stroke-dashoffset: 80;
-    animation: stroke 0.6s 0.3s ease forwards;
+    animation: stroke 0.6s 0.4s ease forwards;
 }
 
 @keyframes stroke {
@@ -720,36 +744,69 @@ footer a:hover {
 }
 
 .success-msg {
-    margin-top: 30px;
+    margin-top: 20px;
     text-align: center;
-    max-width: 480px;
-    padding: 0 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
 }
 
 .success-msg h2 {
     font-family: var(--font-heading);
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: #fff;
     margin-bottom: 12px;
+    flex-shrink: 0;
+}
+
+.success-text-container {
+    width: 100%;
+    overflow-y: auto;
+    max-height: 35vh;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.success-text-container::-webkit-scrollbar {
+    width: 6px;
+}
+.success-text-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+}
+.success-text-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+.success-text-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
 }
 
 .success-msg p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.05rem;
-    margin-bottom: 30px;
-    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
 }
 
 .btn-success-close {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #fff;
-    padding: 12px 30px;
-    border-radius: 10px;
+    padding: 12px 35px;
+    border-radius: 12px;
     font-weight: 600;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: all 0.2s;
+    flex-shrink: 0;
 }
 
 .btn-success-close:hover {
@@ -2948,4 +3005,44 @@ footer a:hover {
     .cl-qty {
         font-size: 0.7rem;
     }
+}
+
+/* Floating Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #0284c7 !important;
+    border: 2px solid #ffffff !important;
+    color: #ffffff !important;
+    font-size: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 99999 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+}
+
+.back-to-top.show {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0) !important;
+}
+
+.back-to-top:hover {
+    background: #0369a1 !important;
+    box-shadow: 0 12px 30px rgba(2, 132, 199, 0.4) !important;
+    transform: translateY(-5px) !important;
+}
+
+.back-to-top:active {
+    transform: translateY(-2px) !important;
 }
