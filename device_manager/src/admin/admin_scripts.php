@@ -508,11 +508,14 @@
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     
-    // Thiết lập font chữ ban đầu để đo đạc chính xác
-    const fontTitle = 'bold 18px Inter, Arial, sans-serif';
-    const fontLabel = 'bold 15px Inter, Arial, sans-serif';
-    const fontValue = '500 15px Inter, Arial, sans-serif';
-    const fontCode = 'bold 15px Inter, Arial, sans-serif';
+    // Thiết lập font chữ ban đầu để đo đạc chính xác (Tăng kích thước chữ lớn hơn 1 chút)
+    const fontTitle = 'bold 20px Inter, Arial, sans-serif';
+    const fontLabel = 'bold 16px Inter, Arial, sans-serif';
+    const fontValue = '500 16px Inter, Arial, sans-serif';
+    const fontCode = 'bold 16px Inter, Arial, sans-serif';
+    
+    const nameLineHeight = 22;
+    const codeLineHeight = 22;
     
     // Đo chiều cao của phần văn bản tự động xuống dòng
     function measureWrappedTextHeight(context, text, maxWidth, lineHeight) {
@@ -556,16 +559,16 @@
     }
 
     ctx.font = fontValue;
-    const nameHeight = measureWrappedTextHeight(ctx, name, 255, 20);
+    const nameHeight = measureWrappedTextHeight(ctx, name, 250, nameLineHeight);
     
     const nameY = 105;
-    const codeY = nameY + nameHeight - 20 + 24;
+    const codeY = nameY + nameHeight - nameLineHeight + 25;
     
     ctx.font = fontCode;
-    const codeHeight = measureWrappedTextHeight(ctx, code, 255, 20);
+    const codeHeight = measureWrappedTextHeight(ctx, code, 250, codeLineHeight);
     
-    const codeEndY = codeY + codeHeight - 20;
-    const managerY = codeEndY + 24;
+    const codeEndY = codeY + codeHeight - codeLineHeight;
+    const managerY = codeEndY + 25;
     
     const qrSize = 240;
     const qrY = managerY + 20;
@@ -667,26 +670,27 @@
         return currentY;
     }
     
+    // Thiết lập chữ hiển thị
     // Thiết bị: [Tên thiết bị]
     ctx.fillStyle = '#000000';
     ctx.font = fontLabel;
     ctx.fillText('Thiết bị:', 40, nameY);
     ctx.font = fontValue;
-    wrapText(ctx, name, 105, nameY, 255, 20);
+    wrapText(ctx, name, 110, nameY, 250, nameLineHeight);
     
     // Mã số: [Mã thiết bị]
     ctx.fillStyle = '#000000';
     ctx.font = fontLabel;
     ctx.fillText('Mã số:', 40, codeY);
     ctx.font = fontCode;
-    wrapText(ctx, code, 105, codeY, 255, 20);
+    wrapText(ctx, code, 110, codeY, 250, codeLineHeight);
     
     // Người quản lý: [Tên giảng viên]
     ctx.fillStyle = '#000000';
     ctx.font = fontLabel;
     ctx.fillText('Người quản lý:', 40, managerY);
     ctx.font = fontValue;
-    ctx.fillText(manager || 'Chưa phân công', 150, managerY);
+    ctx.fillText(manager || 'Chưa phân công', 160, managerY);
     
     // 5. Tạo mã QR Code tạm để lấy ảnh chèn vào Canvas
     const tempContainer = document.createElement('div');
