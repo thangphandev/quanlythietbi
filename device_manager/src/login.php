@@ -79,8 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $_SESSION['email']          = $demo_email;
         $_SESSION['is_demo']        = true;
         
-        header("Location: index.php");
-        exit;
+        redirect_after_login();
     } else {
         $error_msg = "Không tìm thấy giảng viên đã chọn!";
     }

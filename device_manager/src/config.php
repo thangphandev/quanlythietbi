@@ -8,6 +8,30 @@
 // Thiết lập múi giờ Việt Nam mặc định cho PHP toàn hệ thống
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
+// --- Cấu hình tối ưu phiên đăng nhập bền vững (Remember Me) ---
+$session_lifetime = 30 * 24 * 60 * 60; // 30 ngày (tính bằng giây)
+
+// 1. Giữ Cookie phiên đăng nhập trên trình duyệt không bị xoá khi đóng/tắt trình duyệt
+ini_set('session.cookie_lifetime', $session_lifetime);
+
+// 2. Bảo máy chủ giữ tệp tin Session trong 30 ngày trước khi dọn dẹp (Garbage Collection)
+ini_set('session.gc_maxlifetime', $session_lifetime);
+
+// 3. Sử dụng thư mục lưu trữ Session riêng trong dự án
+// Tránh bị hệ điều hành dọn dẹp định kỳ nếu lưu ở thư mục tạm mặc định (/tmp trên Linux)
+$session_save_dir = __DIR__ . '/sessions';
+if (!file_exists($session_save_dir)) {
+    mkdir($session_save_dir, 0700, true);
+}
+session_save_path($session_save_dir);
+
+// 4. Các cấu hình bảo mật nâng cao cho Session Cookie
+ini_set('session.cookie_httponly', 1); // Ngăn chặn JS truy cập Cookie (phòng ngừa XSS)
+ini_set('session.cookie_samesite', 'Lax'); // Phòng ngừa CSRF khi chuyển hướng
+if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['SERVER_PORT'] == 443)) {
+    ini_set('session.cookie_secure', 1); // Chỉ truyền qua HTTPS nếu môi trường hỗ trợ
+}
+
 // Bắt đầu Session nếu chưa được bật
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -170,13 +194,29 @@ function is_logged_in() {
 }
 
 /**
- * Hàm yêu cầu đăng nhập (nếu chưa đăng nhập thì redirect về login.php)
+ * Hàm yêu cầu đăng nhập (nếu chưa đăng nhập thì redirect về login.php và lưu lại trang đang truy cập)
  */
 function require_login() {
     if (!is_logged_in()) {
+        if (!empty($_SERVER['REQUEST_URI'])) {
+            $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
+        }
         header("Location: login.php");
         exit;
     }
+}
+
+/**
+ * Hàm điều hướng người dùng quay lại trang họ đang cố truy cập trước khi đăng nhập
+ */
+function redirect_after_login() {
+    $redirect = 'index.php';
+    if (!empty($_SESSION['redirect_after_login'])) {
+        $redirect = $_SESSION['redirect_after_login'];
+        unset($_SESSION['redirect_after_login']);
+    }
+    header("Location: " . $redirect);
+    exit;
 }
 
 /**

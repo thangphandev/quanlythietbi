@@ -111,9 +111,8 @@ try {
         $_SESSION['email']          = $google_email;
         $_SESSION['is_demo']        = false;
         
-        // Chuyển hướng về trang chủ
-        header("Location: index.php");
-        exit;
+        // Chuyển hướng về trang chủ hoặc trang đang quét trước đó
+        redirect_after_login();
     } else {
         // Nếu email mới chưa được liên kết với bất kỳ Giảng viên nào trong CSDL:
         // Lưu thông tin tạm thời vào Session và chuyển hướng đến trang liên kết tài khoản (link_account.php)

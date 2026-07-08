@@ -66,8 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 unset($_SESSION['pending_google_email']);
                 unset($_SESSION['pending_google_sub']);
                 
-                header("Location: index.php");
-                exit;
+                redirect_after_login();
             } else {
                 $error_msg = "Không thể thực hiện liên kết. Tài khoản này có thể đã được liên kết trước đó!";
             }
