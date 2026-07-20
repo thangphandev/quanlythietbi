@@ -131,12 +131,15 @@ ON CONFLICT (id_giang_vien) DO UPDATE
 SET ho_ten_gv = EXCLUDED.ho_ten_gv, email = EXCLUDED.email;
 
 -- Thêm phân loại mặc định
-INSERT INTO loai (ten_loai, ma_mau) VALUES
-('Mô hình dạy học', '#3b82f6'),
-('Thiết bị chẩn đoán', '#10b981'),
-('Thiết bị đo kiểm', '#f59e0b'),
-('Công cụ cầm tay', '#8b5cf6')
-ON CONFLICT (ten_loai) DO UPDATE SET ma_mau = EXCLUDED.ma_mau;
+INSERT INTO loai (id_loai, ten_loai, ma_mau) VALUES
+(1, 'Mô hình dạy học', '#3b82f6'),
+(2, 'Thiết bị chẩn đoán', '#10b981'),
+(3, 'Thiết bị đo kiểm', '#f59e0b'),
+(4, 'Công cụ cầm tay', '#8b5cf6')
+ON CONFLICT (id_loai) DO UPDATE SET ten_loai = EXCLUDED.ten_loai, ma_mau = EXCLUDED.ma_mau;
+
+-- Đồng bộ lại sequence của id_loai sau khi chèn cứng ID
+SELECT setval('loai_id_loai_seq', COALESCE((SELECT MAX(id_loai) FROM loai), 1));
 
 -- Thêm thiết bị mẫu
 INSERT INTO thiet_bi (ma_thiet_bi, ten_thiet_bi, vi_tri, nam_su_dung, chat_luong, id_giang_vien_quan_ly, id_loai) VALUES

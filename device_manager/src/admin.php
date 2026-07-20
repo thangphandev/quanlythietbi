@@ -188,6 +188,16 @@ $ho_ten_gv = $_SESSION['ho_ten_gv'];
 $msg = "";
 $error = "";
 
+// Kiểm tra dung lượng request nếu bị vượt quá giới hạn post_max_size của PHP
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST) && empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0) {
+    $error = "Dung lượng hình ảnh/dữ liệu tải lên quá lớn (vượt quá giới hạn máy chủ)!";
+    if (isset($_GET['ajax']) || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest')) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => $error]);
+        exit;
+    }
+}
+
 // Tạo thư mục uploads nếu chưa tồn tại
 if (!file_exists('uploads')) {
     mkdir('uploads', 0777, true);

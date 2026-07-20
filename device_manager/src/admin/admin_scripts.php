@@ -1304,6 +1304,97 @@
         }
     }
 
+    // ==============================================================================
+    // TIỆN ÍCH NÉN HÌNH ẢNH TRÊN TRÌNH DUYỆT (CLIENT-SIDE IMAGE COMPRESSION)
+    // Tự động thu nhỏ ảnh chụp từ điện thoại (10-15MB) xuống ~200-300KB JPEG
+    // ==============================================================================
+    function compressImage(file, maxWidth = 1200, maxHeight = 1200, quality = 0.82) {
+        return new Promise((resolve) => {
+            if (!file || !file.type || !file.type.startsWith('image/')) {
+                resolve(file);
+                return;
+            }
+            // Không nén nếu file quá nhỏ (< 400KB)
+            if (file.size <= 400 * 1024) {
+                resolve(file);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    let w = img.width;
+                    let h = img.height;
+
+                    if (w > maxWidth || h > maxHeight) {
+                        if (w > h) {
+                            h = Math.round((h * maxWidth) / w);
+                            w = maxWidth;
+                        } else {
+                            w = Math.round((w * maxHeight) / h);
+                            h = maxHeight;
+                        }
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, w, h);
+                    ctx.drawImage(img, 0, 0, w, h);
+
+                    canvas.toBlob((blob) => {
+                        if (!blob) {
+                            resolve(file);
+                            return;
+                        }
+                        const newFileName = (file.name || 'photo').replace(/\.[^/.]+$/, "") + ".jpg";
+                        const compressedFile = new File([blob], newFileName, {
+                            type: 'image/jpeg',
+                            lastModified: Date.now()
+                        });
+                        resolve(compressedFile);
+                    }, 'image/jpeg', quality);
+                };
+                img.onerror = function() {
+                    resolve(file);
+                };
+                img.src = e.target.result;
+            };
+            reader.onerror = function() {
+                resolve(file);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Tự động nén ảnh ngay khi chọn tệp trên điện thoại hoặc máy tính
+    function setupFileInputAutoCompress(inputElem) {
+        if (!inputElem) return;
+        inputElem.addEventListener("change", async function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                if (file.size > 400 * 1024 || (file.type && (file.type.includes("heic") || file.type.includes("heif")))) {
+                    showNotification("⏳ Đang tối ưu dung lượng hình ảnh từ điện thoại...", "🖼️");
+                    try {
+                        const compressed = await compressImage(file, 1200, 1200, 0.82);
+                        if (window.DataTransfer) {
+                            const dt = new DataTransfer();
+                            dt.items.add(compressed);
+                            this.files = dt.files;
+                        }
+                        showNotification("✨ Đã tối ưu hình ảnh thành công!", "✔️");
+                    } catch (err) {
+                        console.warn("Không thể tối ưu ảnh trước:", err);
+                    }
+                }
+            }
+        });
+    }
+
     function closeAddCategoryModal(isPopstate = false) {
         if (addCatModal && addCatModal.classList.contains("active")) {
             addCatModal.classList.remove("active");
@@ -1342,25 +1433,46 @@
     // XỬ LÝ AJAX LƯU THAY ĐỔI THIẾT BỊ KHÔNG TẢI LẠI TRANG
     // ==============================================================================
     document.addEventListener("DOMContentLoaded", function() {
+        const editImageInput = document.getElementById("edit_hinh_anh");
+        const addImageInput = document.getElementById("add_hinh_anh");
+        setupFileInputAutoCompress(editImageInput);
+        setupFileInputAutoCompress(addImageInput);
+
         const editForm = document.getElementById("editDeviceForm");
         if (editForm) {
-            editForm.addEventListener("submit", function(e) {
+            editForm.addEventListener("submit", async function(e) {
                 e.preventDefault();
                 
-                showNotification("⏳ Đang cập nhật thông tin...", "⚙️");
+                showNotification("⏳ Đang xử lý & lưu thông tin...", "⚙️");
                 
                 const formData = new FormData(editForm);
+                const fileInput = editForm.querySelector('input[type="file"][name="hinh_anh"]');
+                
+                if (fileInput && fileInput.files && fileInput.files[0]) {
+                    try {
+                        const compressedFile = await compressImage(fileInput.files[0], 1200, 1200, 0.82);
+                        formData.set("hinh_anh", compressedFile);
+                    } catch (err) {
+                        console.warn("Nén ảnh trước khi gửi thất bại, dùng file gốc:", err);
+                    }
+                }
+
                 formData.append("ajax", "1");
                 
-                fetch("admin.php", {
+                fetch("admin.php?ajax=1", {
                     method: "POST",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
                     body: formData
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("HTTP error " + response.status);
+                .then(async response => {
+                    const text = await response.text();
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        throw new Error(text.length > 0 ? text.substring(0, 120) : "Phản hồi từ máy chủ không chứa dữ liệu JSON hợp lệ.");
                     }
-                    return response.json();
                 })
                 .then(result => {
                     if (result.success) {
@@ -1368,12 +1480,12 @@
                         closeEditModal();
                         updateDeviceRow(result.data);
                     } else {
-                        showNotification("⚠️ " + result.message, "❌");
+                        showNotification("⚠️ " + (result.message || "Không thể cập nhật!"), "❌");
                     }
                 })
                 .catch(error => {
                     console.error("AJAX Edit Error:", error);
-                    showNotification("⚠️ Có lỗi xảy ra trong quá trình cập nhật dưới nền!", "❌");
+                    showNotification("⚠️ " + (error.message || "Có lỗi xảy ra trong quá trình cập nhật dưới nền!"), "❌");
                 });
             });
         }

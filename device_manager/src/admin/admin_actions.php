@@ -15,6 +15,9 @@
  * Tạo ảnh nhỏ (thumbnail) và nén dung lượng duy trì tỉ lệ
  */
 function create_thumbnail($src, $dest, $max_w = 200, $max_h = 200) {
+    // Tăng giới hạn bộ nhớ PHP tạm thời để xử lý ảnh độ phân giải cao từ điện thoại
+    @ini_set('memory_limit', '256M');
+    
     // Kiểm tra xem thư viện GD có được cài đặt không
     if (!function_exists('imagecreatetruecolor')) {
         return false;
@@ -114,11 +117,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
         // Xử lý upload ảnh
         $hinh_anh = null;
         if (isset($_FILES['hinh_anh']) && $_FILES['hinh_anh']['error'] === UPLOAD_ERR_OK) {
-            $ext = pathinfo($_FILES['hinh_anh']['name'], PATHINFO_EXTENSION);
+            $ext = strtolower(pathinfo($_FILES['hinh_anh']['name'], PATHINFO_EXTENSION));
+            if (empty($ext)) $ext = 'jpg';
             $new_name = 'device_' . uniqid() . '.' . $ext;
             if (move_uploaded_file($_FILES['hinh_anh']['tmp_name'], 'uploads/' . $new_name)) {
                 $hinh_anh = $new_name;
-                // Tạo ảnh nhỏ (thumbnail) kích thước tối đa 200x200
+                // Tạo ảnh nhỏ (thumbnail) kích thước tối đa 400x400
                 create_thumbnail('uploads/' . $new_name, 'uploads/thumb_' . $new_name, 400, 400);
             }
         }
@@ -168,14 +172,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_action'])) {
                     'ma' => $ma, 'ten' => $ten, 'vi_tri' => $vi_tri, 'nam' => $nam, 'chat_luong' => $chat_luong, 'gv' => $gv_quan_ly, 'id_loai' => $id_loai, 'tai_lieu_link' => $tai_lieu_link, 'id' => $id
                 ];
                 
-                if (isset($_FILES['hinh_anh']) && $_FILES['hinh_anh']['error'] === UPLOAD_ERR_OK) {
-                    $ext = pathinfo($_FILES['hinh_anh']['name'], PATHINFO_EXTENSION);
-                    $new_name = 'device_' . uniqid() . '.' . $ext;
-                    if (move_uploaded_file($_FILES['hinh_anh']['tmp_name'], 'uploads/' . $new_name)) {
-                        $image_sql = ", hinh_anh = :hinh_anh";
-                        $params['hinh_anh'] = $new_name;
-                        // Tạo ảnh nhỏ (thumbnail) kích thước tối đa 200x200
-                        create_thumbnail('uploads/' . $new_name, 'uploads/thumb_' . $new_name, 200, 200);
+                if (isset($_FILES['hinh_anh']) && $_FILES['hinh_anh']['error'] !== UPLOAD_ERR_NO_FILE) {
+                    if ($_FILES['hinh_anh']['error'] === UPLOAD_ERR_OK) {
+                        $ext = strtolower(pathinfo($_FILES['hinh_anh']['name'], PATHINFO_EXTENSION));
+                        if (empty($ext)) $ext = 'jpg';
+                        $new_name = 'device_' . uniqid() . '.' . $ext;
+                        if (move_uploaded_file($_FILES['hinh_anh']['tmp_name'], 'uploads/' . $new_name)) {
+                            $image_sql = ", hinh_anh = :hinh_anh";
+                            $params['hinh_anh'] = $new_name;
+                            // Tạo ảnh nhỏ (thumbnail) kích thước tối đa 200x200
+                            create_thumbnail('uploads/' . $new_name, 'uploads/thumb_' . $new_name, 200, 200);
+                        }
+                    } else {
+                        $err_code = $_FILES['hinh_anh']['error'];
+                        $err_msg = ($err_code === UPLOAD_ERR_INI_SIZE || $err_code === UPLOAD_ERR_FORM_SIZE) 
+                            ? "Dung lượng hình ảnh quá lớn vượt quá giới hạn máy chủ!" 
+                            : "Không thể tải ảnh lên (Mã lỗi: $err_code)!";
+                        if (isset($_POST['ajax'])) {
+                            header('Content-Type: application/json');
+                            echo json_encode(['success' => false, 'message' => $err_msg]);
+                            exit;
+                        }
                     }
                 }
                 
