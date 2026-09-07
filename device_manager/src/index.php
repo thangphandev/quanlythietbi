@@ -121,6 +121,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 'chat_luong'  => $new_chat_luong,
                 'id'          => $db_id
             ]);
+
+            // Gửi email nếu thiết bị hư hỏng
+            if ($cond === 'Hư hỏng') {
+                require_once __DIR__ . '/mail_helper.php';
+                $email_stmt = $db->prepare("
+                    SELECT tb.ma_thiet_bi, tb.ten_thiet_bi, tb.vi_tri, gv.email, gv.ho_ten_gv 
+                    FROM thiet_bi tb 
+                    LEFT JOIN giang_vien gv ON tb.id_giang_vien_quan_ly = gv.id_giang_vien 
+                    WHERE tb.id = :id
+                ");
+                $email_stmt->execute(['id' => $db_id]);
+                $deviceInfo = $email_stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if ($deviceInfo && !empty($deviceInfo['email'])) {
+                    sendDeviceDamageAlert(
+                        $deviceInfo['email'], 
+                        $deviceInfo['ho_ten_gv'], 
+                        $deviceInfo, 
+                        $detail ?: 'Hư hỏng', 
+                        $ho_ten_gv // Tên người mượn/thao tác
+                    );
+                }
+            }
         }
         
         $db->commit();

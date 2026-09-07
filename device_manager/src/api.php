@@ -104,6 +104,29 @@ if ($action === 'update_quality') {
     try {
         $db->prepare("UPDATE thiet_bi SET chat_luong = :chat_luong, updated_at = NOW() WHERE id = :id")
            ->execute(['chat_luong' => $chat_luong_text, 'id' => $id]);
+
+        if ($condition === 'Hư hỏng') {
+            require_once __DIR__ . '/mail_helper.php';
+            $stmt = $db->prepare("
+                SELECT tb.ma_thiet_bi, tb.ten_thiet_bi, tb.vi_tri, gv.email, gv.ho_ten_gv 
+                FROM thiet_bi tb 
+                LEFT JOIN giang_vien gv ON tb.id_giang_vien_quan_ly = gv.id_giang_vien 
+                WHERE tb.id = :id
+            ");
+            $stmt->execute(['id' => $id]);
+            $deviceInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($deviceInfo && !empty($deviceInfo['email'])) {
+                sendDeviceDamageAlert(
+                    $deviceInfo['email'], 
+                    $deviceInfo['ho_ten_gv'], 
+                    $deviceInfo, 
+                    $detail ?: 'Hư hỏng', 
+                    'Quản trị viên (Admin)'
+                );
+            }
+        }
+
         echo json_encode(['success' => true, 'msg' => 'Cập nhật tình trạng thành công!', 'new_chat_luong' => $chat_luong_text]);
     } catch (PDOException $e) {
         echo json_encode(['error' => 'Lỗi CSDL: ' . $e->getMessage()]);

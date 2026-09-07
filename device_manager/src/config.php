@@ -59,6 +59,7 @@ function load_env_file($path) {
     }
 }
 load_env_file('/app_crawler/.env');
+load_env_file(__DIR__ . '/../.env');
 
 // 1. Đọc các tham số cấu hình từ biến môi trường (Docker)
 $db_host = getenv('DB_HOST') ?: 'localhost';
@@ -87,6 +88,14 @@ define('ADMIN_PIN', getenv('ADMIN_PIN') ?: '123456');
 // Cấu hình cho phép đăng nhập Chế độ Demo (true để bật khi kiểm thử, false để tắt khi chạy thực tế)
 $allow_demo_val = getenv('ALLOW_DEMO') !== false ? getenv('ALLOW_DEMO') : 'false';
 define('ALLOW_DEMO', in_array(strtolower($allow_demo_val), ['true', '1', 'yes', 'on'], true));
+
+// Đọc cấu hình SMTP
+define('SMTP_HOST', getenv('SMTP_HOST') ?: 'smtp.gmail.com');
+define('SMTP_PORT', getenv('SMTP_PORT') ?: '587');
+define('SMTP_USER', getenv('SMTP_USER') ?: '');
+define('SMTP_PASS', getenv('SMTP_PASS') ?: '');
+define('SMTP_NAME', getenv('SMTP_NAME') ?: 'Hệ thống Quản lý Thiết bị');
+
 
 // 2. Kết nối Cơ sở dữ liệu với chế độ Retry (phòng trường hợp DB khởi động chậm trong Docker)
 $db = null;
