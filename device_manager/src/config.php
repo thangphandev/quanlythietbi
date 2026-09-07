@@ -90,11 +90,11 @@ $allow_demo_val = getenv('ALLOW_DEMO') !== false ? getenv('ALLOW_DEMO') : 'false
 define('ALLOW_DEMO', in_array(strtolower($allow_demo_val), ['true', '1', 'yes', 'on'], true));
 
 // Đọc cấu hình SMTP
-define('SMTP_HOST', getenv('SMTP_HOST') ?: 'smtp.gmail.com');
-define('SMTP_PORT', getenv('SMTP_PORT') ?: '587');
-define('SMTP_USER', getenv('SMTP_USER') ?: '');
-define('SMTP_PASS', getenv('SMTP_PASS') ?: '');
-define('SMTP_NAME', getenv('SMTP_NAME') ?: 'Hệ thống Quản lý Thiết bị');
+define('SMTP_HOST', $_ENV['SMTP_HOST'] ?? getenv('SMTP_HOST') ?: 'smtp.gmail.com');
+define('SMTP_PORT', $_ENV['SMTP_PORT'] ?? getenv('SMTP_PORT') ?: '587');
+define('SMTP_USER', $_ENV['SMTP_USER'] ?? getenv('SMTP_USER') ?: '');
+define('SMTP_PASS', $_ENV['SMTP_PASS'] ?? getenv('SMTP_PASS') ?: '');
+define('SMTP_NAME', $_ENV['SMTP_NAME'] ?? getenv('SMTP_NAME') ?: 'Hệ thống Quản lý Thiết bị');
 
 
 // 2. Kết nối Cơ sở dữ liệu với chế độ Retry (phòng trường hợp DB khởi động chậm trong Docker)

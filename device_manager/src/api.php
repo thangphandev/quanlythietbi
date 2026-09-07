@@ -105,7 +105,7 @@ if ($action === 'update_quality') {
         $db->prepare("UPDATE thiet_bi SET chat_luong = :chat_luong, updated_at = NOW() WHERE id = :id")
            ->execute(['chat_luong' => $chat_luong_text, 'id' => $id]);
 
-        if ($condition === 'Hư hỏng') {
+        if ($condition === 'Hư hỏng' || $condition === 'Lỗi nhẹ') {
             require_once __DIR__ . '/mail_helper.php';
             $stmt = $db->prepare("
                 SELECT tb.ma_thiet_bi, tb.ten_thiet_bi, tb.vi_tri, gv.email, gv.ho_ten_gv 
@@ -117,11 +117,12 @@ if ($action === 'update_quality') {
             $deviceInfo = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($deviceInfo && !empty($deviceInfo['email'])) {
+                $statusText = $condition === 'Hư hỏng' ? 'HƯ HỎNG' : 'LỖI NHẸ';
                 sendDeviceDamageAlert(
                     $deviceInfo['email'], 
                     $deviceInfo['ho_ten_gv'], 
                     $deviceInfo, 
-                    $detail ?: 'Hư hỏng', 
+                    $detail ?: $condition, 
                     'Quản trị viên (Admin)'
                 );
             }

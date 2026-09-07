@@ -122,8 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 'id'          => $db_id
             ]);
 
-            // Gửi email nếu thiết bị hư hỏng
-            if ($cond === 'Hư hỏng') {
+            // Gửi email nếu thiết bị hư hỏng hoặc lỗi nhẹ
+            if ($cond === 'Hư hỏng' || $cond === 'Lỗi nhẹ') {
                 require_once __DIR__ . '/mail_helper.php';
                 $email_stmt = $db->prepare("
                     SELECT tb.ma_thiet_bi, tb.ten_thiet_bi, tb.vi_tri, gv.email, gv.ho_ten_gv 
@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         $deviceInfo['email'], 
                         $deviceInfo['ho_ten_gv'], 
                         $deviceInfo, 
-                        $detail ?: 'Hư hỏng', 
+                        $detail ?: $cond, 
                         $ho_ten_gv // Tên người mượn/thao tác
                     );
                 }
