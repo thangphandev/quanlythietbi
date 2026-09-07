@@ -26,3 +26,5 @@ device_manager/backups/*.log
 *.ntvs*
 *.njsproj
 *.sln
+
+device_manager/src/sessions/*
